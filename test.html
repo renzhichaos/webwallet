@@ -2,11 +2,13 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="js/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+<link rel="stylesheet" href="js/css/bootstrap.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="js/css/bootstrap-datetimepicker.min.css" crossorigin="anonymous">
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="js/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="js/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <script type="text/javascript" src="js/bignumber.js"></script>
 <script type="text/javascript" src="js/web3.js"></script>
@@ -65,6 +67,21 @@
                         <div id="setresult"></div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="searchAddress" placeholder="地址: 0x1ceb00da"/>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="initialized">查询空投</button>
+                        <button type="button" class="btn btn-outline-primary" id="balances">查询SCD</button>
+                        <button type="button" class="btn btn-outline-primary" id="frozens">查询状态</button>
+                        <button type="button" class="btn btn-outline-primary" id="frozenNum">查询锁仓</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="searchresult"></div>
+                    </div>
+                </div>
             </div>
 
             <div class="user">
@@ -81,10 +98,10 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <button type="button" class="btn btn-outline-primary" id="transfer">发送<span class="symbol"></span></button>
-                        <button type="button" class="btn btn-outline-primary" id="approve">授权<span class="symbol"></span></button>
-                        <button type="button" class="btn btn-outline-primary" id="burnFrom">销毁授权的<span class="symbol"></span></button>
-                        <button type="button" class="btn btn-outline-primary owner" id="mintToken">增发<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="transfer">发送<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="approve">授权<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="burnFrom">销毁授权的<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 owner" id="mintToken">增发<span class="symbol"></span></button>
                     </div>
                     <div class="input-group mb-3">
                         <div id="result"></div>
@@ -92,22 +109,31 @@
                 </div>
 
                 <div class="form-group">
-                    <h4>授权<span class="symbol"></span></h4>
-                    <p>授权给另外一个账号.</p>
+                    <h4>设置空投<span class="symbol"></span></h4>
+                    <p>设置空投.</p>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="toAdsdress" placeholder="地址: 0x1ceb00da"/>
+                        <input type="text" class="form-control datetime" id="dropStart" placeholder="日期: yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="number" class="form-control" id="tosAmount" min="0.01" step="0.01" placeholder="数量: 0.01" value="0.01"/>
+                        <input type="text" class="form-control datetime" id="dropEnd" placeholder="日期: yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" id="airDrop" min="0.01" step="0.01" placeholder="空投数量: 0.01" value="0.01"/>
                         <div class="input-group-append">
-                            <label class="input-group-text" for="toAmount"><span class="symbol"></span></label>
+                            <label class="input-group-text" for="airDrop"><span class="symbol"></span></label>
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <button class="btn btn-outline-primary" id="transsfer">发送</button>
+                        <input type="number" class="form-control" id="totalDrop" min="0.01" step="0.01" placeholder="空投总量: 0.01" value="0.01"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="totalDrop"><span class="symbol"></span></label>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
-                        <div id="sresult"></div>
+                        <button class="btn btn-outline-primary" id="setAirDrop">设置</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="setAirDropresult"></div>
                     </div>
                 </div>
             </div>
