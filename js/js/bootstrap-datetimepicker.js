@@ -250,7 +250,7 @@
     this.clearBtn = (options.clearBtn || this.element.data('date-clear-btn') || false);
     this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
 
-    this.weekStart = 0;
+    this.weekStart = 1;
     if (typeof options.weekStart !== 'undefined') {
       this.weekStart = options.weekStart;
     } else if (typeof this.element.data('date-weekstart') !== 'undefined') {
