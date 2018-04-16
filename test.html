@@ -42,7 +42,7 @@
                 <div>兑换ETH结束时间: <span class="exchangeEnd"></span>.</div>
                 <div>每月持币激励百分比: <span class="powers"></span>%.</div>
                 <div>持币的人数(即每月激励中加权平均的基数): <span class="users"></span>.</div>
-                <div>领取每月激励的账户最少持有{{symbol}}量: <span class="minToken"></span> <span class="symbol"></span>.</div>
+                <div>领取每月激励的账户最少持有<span class="symbol"></span>量: <span class="minToken"></span> <span class="symbol"></span>.</div>
                 <div>可以领取每月激励的人数: <span class="count"></span>.</div>
                 <div>gasPrice: <span class="gasPrice"></span> ETH.</div>
             </div>
@@ -243,7 +243,8 @@
                     </div>
                     <div class="btn-group mb-3">
                         <button type="button" class="btn btn-outline-primary withlock" id="burn">销毁<span class="symbol"></span></button>
-                        <button type="button" class="btn btn-outline-primary withlock" id="sell">兑换ETH</button>
+                        <button type="button" class="btn btn-outline-primary withlock withsell" id="buy">购买<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary withlock withsell" id="sell"><span class="symbol"></span>兑换ETH</button>
                     </div>
                     <div class="input-group mb-3">
                         <div id="userresult"></div>
