@@ -1,140 +1,269 @@
-if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
-} else {
-    // set the provider you want from Web3.providers
-    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-}
-console.log(JSON.stringify(web3));
-var version = web3.version.api;
-var node = web3.version.node;
-var network = web3.version.network;
-var ethereum = web3.version.ethereum;
-var coinbase = web3.eth.coinbase;
-var gasPrice = web3.fromWei(web3.eth.gasPrice).toFixed();
-var tokenAddress = "0x4636f0dfb4aebfe3fda1c21e94d48b553a5d3fe2";
-var abi = [{"constant":true,"inputs":[],"name":"count","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"giveEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"currentDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_value","type":"bool"}],"name":"setMonthClose","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_exchangeStart","type":"uint256"},{"name":"_exchangeEnd","type":"uint256"},{"name":"_sellPrice","type":"uint256"},{"name":"_buyPrice","type":"uint256"}],"name":"setExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"monthPower","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeMyFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"sellPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"sellToContract","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_lock","type":"bool"}],"name":"setLock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"powers","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeUserFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_mintedAmount","type":"uint256"}],"name":"mintToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_balance","type":"uint256"}],"name":"takeEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_minimumEtherInFinney","type":"uint256"}],"name":"setMinEther","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"buyPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_open","type":"bool"}],"name":"setDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"}],"name":"getMonth","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"exchangeEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"buy","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"minToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_lockEnd","type":"uint256"}],"name":"lockAccount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozens","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"airDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"initialized","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_users","type":"uint256"},{"name":"_powers","type":"uint8"},{"name":"_minToken","type":"uint256"},{"name":"_count","type":"uint256"}],"name":"setMonthOpen","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"minEtherForAccounts","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_sellToContract","type":"bool"}],"name":"setSellToContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"exchangeStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"monthOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_amount","type":"uint256"}],"name":"sell","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenNum","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getEther","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"users","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dropStart","type":"uint256"},{"name":"_dropEnd","type":"uint256"},{"name":"_airDrop","type":"uint256"},{"name":"_totalDrop","type":"uint256"}],"name":"setAirDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"contractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"drop","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lock","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"centralMinter","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"}],"name":"FrozenFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"},{"indexed":false,"name":"fronzeEnd","type":"uint256"}],"name":"FrozenMyFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}];
-var mytokenContract = web3.eth.contract(abi);
-var mytoken = mytokenContract.at(tokenAddress);
-var tokenETH = Number(web3.eth.getBalance(tokenAddress))/Math.pow(10,18);
-var accounts = web3.eth.accounts;
-web3.eth.defaultAccount = accounts[1];
-var name = mytoken.name.call().toString();//名字
-var symbol = mytoken.symbol.call().toString();//代号
-var decimals = mytoken.decimals.call();//小数点后位数
-var totalSupply = Number(mytoken.totalSupply.call())/Math.pow(10,decimals);//总发行量
-
-var exchangeStart = mytoken.exchangeStart.call();//兑换ether开始时间(秒)
-var exchangeEnd = mytoken.exchangeEnd.call();//兑换ether结束时间(秒)
-var sellPrice =  Number(mytoken.sellPrice.call())/Math.pow(10,16);//卖出给合约的价格
-var buyPrice = Number(mytoken.buyPrice.call())/Math.pow(10,16);//买入价格
-
-var drop = mytoken.drop.call();//开启/关闭空投
-var airDrop = Number(mytoken.airDrop.call())/Math.pow(10,decimals);//单账户空投数量
-var currentDrop = Number(mytoken.currentDrop.call())/Math.pow(10,decimals);//当前空投量
-var totalDrop = Number(mytoken.totalDrop.call())/Math.pow(10,decimals);//空投总量
-var dropStart = mytoken.dropStart.call();//空投开始时间(秒)
-var dropEnd = mytoken.dropEnd.call();//空投结束时间(秒)
-
-var minEtherForAccounts = Number(mytoken.minEtherForAccounts.call())/Math.pow(10,18);//交易时最少持有以太币量
-var powers = mytoken.powers.call();//每月持币激励百分比
-var users = mytoken.users.call();//持币的人数(即每月激励中加权平均的基数)
-var minToken = Number(mytoken.minToken.call())/Math.pow(10,decimals);//领取每月激励的账户最少持有代币量
-var count = mytoken.count.call();//可以领取激励的人数
-
-var lock = mytoken.lock.call();//锁定(true)/解锁(false)交易
-var sellToContract = mytoken.sellToContract.call();//允许卖代币给这个合约以换取ether
-var myaddress = web3.eth.defaultAccount;
-var owner = mytoken.owner.call().toString();
-var initialized = mytoken.initialized.call(myaddress);
-var balances = mytoken.balances.call(myaddress)/Math.pow(10,decimals);
-var frozens = mytoken.frozens.call(myaddress);
-var frozenNum = mytoken.frozenNum.call(myaddress)/Math.pow(10,decimals);
-var frozenEnd = mytoken.frozenEnd.call(myaddress);
-
 $(document).ready(function(){
-    $(".name").text(name);
-    $(".symbol").text(symbol);
+    if (typeof web3 !== 'undefined') {
+        console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
+        window.web3 = new Web3(web3.currentProvider);
+    } else {
+        console.log('No Web3 Detected... using HTTP Provider')
+        window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/noapikey"));
+    }
+    var network;
+    web3.version.getNetwork(function(err, netId) {
+        switch (netId) {
+        case "1":
+            network = "mainnet";
+            console.log('This is mainnet');
+            break;
+        case "2":
+            network = "deprecated Morden";
+            console.log('This is the deprecated Morden test network.');
+            break;
+        case "3":
+            network = "ropsten";
+            console.log('This is the ropsten test network.');
+            break;
+        case "4":
+            network = "Rinkeby";
+            console.log('This is the Rinkeby test network.');
+            break;
+        case "42":
+            network = "Kovan";
+            console.log('This is the Kovan test network.');
+            break;
+        default:
+            network = "test";
+            console.log('This is an unknown network.');
+        }
+        $(".network").text(network);
+    });
+    var version = web3.version.api;
     $(".version").text(version);
-    $(".node").text(node);
-    $(".network").text(network);
-    $(".ethereum").text(ethereum);
+    var node;
+    web3.version.getNode(function(err, result){
+        node = result;
+        $(".node").text(node);
+    });
+    var ethereum;
+    web3.version.getEthereum(function(err, result){
+        ethereum = result;
+        $(".ethereum").text(ethereum);
+    });
+    var coinbase = web3.eth.coinbase;
+    var gasPrice;
+    web3.eth.getGasPrice(function(err, result){
+        gasPrice = web3.fromWei(result).toFixed();
+        $(".gasPrice").text(gasPrice);
+    });
+
+    var tokenAddress = "0x13Ad69C133015347a5D4F4333E5F99327fCA5881";
+    var abi = [{"constant":true,"inputs":[],"name":"count","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"giveEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"currentDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_value","type":"bool"}],"name":"setMonthClose","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_exchangeStart","type":"uint256"},{"name":"_exchangeEnd","type":"uint256"},{"name":"_sellPrice","type":"uint256"},{"name":"_buyPrice","type":"uint256"}],"name":"setExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"monthPower","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeMyFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"sellPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"sellToContract","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_lock","type":"bool"}],"name":"setLock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"powers","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeUserFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_mintedAmount","type":"uint256"}],"name":"mintToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_balance","type":"uint256"}],"name":"takeEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_minimumEtherInFinney","type":"uint256"}],"name":"setMinEther","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"buyPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_open","type":"bool"}],"name":"setDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"}],"name":"getMonth","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"exchangeEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"buy","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"minToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_lockEnd","type":"uint256"}],"name":"lockAccount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozens","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"airDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"initialized","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_users","type":"uint256"},{"name":"_powers","type":"uint8"},{"name":"_minToken","type":"uint256"},{"name":"_count","type":"uint256"}],"name":"setMonthOpen","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"minEtherForAccounts","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_sellToContract","type":"bool"}],"name":"setSellToContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"exchangeStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"monthOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_amount","type":"uint256"}],"name":"sell","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenNum","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getEther","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"users","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dropStart","type":"uint256"},{"name":"_dropEnd","type":"uint256"},{"name":"_airDrop","type":"uint256"},{"name":"_totalDrop","type":"uint256"}],"name":"setAirDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"contractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"drop","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lock","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"centralMinter","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"}],"name":"FrozenFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"},{"indexed":false,"name":"fronzeEnd","type":"uint256"}],"name":"FrozenMyFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}];
     $(".tokenAddress").text(tokenAddress);
-    $(".tokenETH").text(tokenETH);
-    $(".totalSupply").text(totalSupply);
-    if(lock){
-        $(".lock").attr("class", "lock badge badge-danger").text("关闭");
-        $("#setlock").attr("class", "btn btn-outline-danger openLock").text("开启交易功能");
-        $(".withlock").attr("disabled","disabled");
-    }else{
-        $(".lock").attr("class", "lock badge badge-success").text("开启");
-        $("#setlock").attr("class", "btn btn-success closeLock").text("关闭交易功能");
-    }
-    $(".minEtherForAccounts").text(minEtherForAccounts);
-    if(drop){
-        $(".drop").attr("class", "drop badge badge-success").text("开启");
-        $("#setdrop").attr("class", "btn btn-success closeDrop").text("关闭空投");
-    }else{
-        $(".drop").attr("class", "drop badge badge-danger").text("关闭");
-        $("#setdrop").attr("class", "btn btn-outline-danger openDrop").text("开启空投");
-    }
-    $(".airDrop").text(airDrop);
-    $("#airDrop").val(airDrop);
-    $(".totalDrop").text(totalDrop);
-    $("#totalDrop").val(totalDrop);
-    $(".currentDrop").text(currentDrop);
-    if(dropStart > 0){
-        $(".dropStart").text(new Date(dropStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        $("#dropStart").val(new Date(dropStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-    }else{
-        $(".dropStart").text("无限制");
-    }
-    if(dropEnd > 0){
-        $(".dropEnd").text(new Date(dropEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        $("#dropEnd").val(new Date(dropEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-    }else{
-        $(".dropEnd").text("无限制")
-    }
-    $(".buyPrice").text(buyPrice);
-    $("#buyPrice").val(buyPrice);
-    if(sellToContract){
-        $(".sellToContract").attr("class", "sellToContract badge badge-success").text("开启");
-        $("#setsellToContract").attr("class", "btn btn-success closesellToContract").text("关闭兑换ETH");
-    }else{
-        $(".sellToContract").attr("class", "sellToContract badge badge-danger").text("关闭");
-        $("#setsellToContract").attr("class", "btn btn-outline-danger opensellToContract").text("开启兑换ETH");
-        $(".withsell").attr("disabled","disabled");
-    }
-    $(".sellPrice").text(sellPrice);
-    $("#sellPrice").val(sellPrice);
-    if(exchangeStart > 0){
-        $(".exchangeStart").text(new Date(exchangeStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        $("#exchangeStart").val(new Date(exchangeStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-    }else{
-        $(".exchangeStart").text("无限制");
-    }
-    if(exchangeEnd > 0){
-        $(".exchangeEnd").text(new Date(exchangeEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        $("#exchangeEnd").val(new Date(exchangeEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-    }else{
-        $(".exchangeEnd").text("无限制");
-    }
-    $(".powers").text(powers);
-    $("#powers").val(powers);
-    $(".users").text(users);
-    $("#users").val(users);
-    $(".minToken").text(minToken);
-    $("#minToken").val(minToken);
-    $(".count").text(count);
-    $("#count").val(count);
-    $(".gasPrice").text(gasPrice);
+    var mytokenContract = web3.eth.contract(abi);
+    var mytoken = mytokenContract.at(tokenAddress);
+    var tokenETH;
+    web3.eth.getBalance(tokenAddress, function(err, result){
+        tokenETH = Number(result)/Math.pow(10,18);
+        $(".tokenETH").text(tokenETH);
+    });
+    var accounts = web3.eth.accounts;
+    web3.eth.defaultAccount = accounts[0];
+    console.log(accounts);
+    var name;
+    mytoken.name.call(function(err, result){
+        name = result;
+        $(".name").text(name);
+    });//名字
+    var symbol;
+    mytoken.symbol.call(function(err, result){
+        symbol = result;
+        $(".symbol").text(symbol);
+    });//代号
+    var decimals;
+    mytoken.decimals.call(function(err, result){
+        decimals = result;
+    });//小数点后位数
+    var totalSupply;
+    mytoken.totalSupply.call(function(err, result){
+        totalSupply = Number(result)/Math.pow(10,decimals);//总发行量;
+        $(".totalSupply").text(totalSupply);
+    })
+
+    var exchangeStart;
+    mytoken.exchangeStart.call(function(err, result){
+        exchangeStart = result;
+        if(exchangeStart > 0){
+            $(".exchangeStart").text(new Date(exchangeStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+            $("#exchangeStart").val(new Date(exchangeStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        }else{
+            $(".exchangeStart").text("无限制");
+        }
+    });//兑换ether开始时间(秒)
+    var exchangeEnd;
+    mytoken.exchangeEnd.call(function(err, result){
+        exchangeEnd = result;
+        if(exchangeEnd > 0){
+            $(".exchangeEnd").text(new Date(exchangeEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+            $("#exchangeEnd").val(new Date(exchangeEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        }else{
+            $(".exchangeEnd").text("无限制");
+        }
+    });//兑换ether结束时间(秒)
+    var sellPrice;
+    mytoken.sellPrice.call(function(err, result){
+        sellPrice = Number(result)/Math.pow(10,16);
+        $(".sellPrice").text(sellPrice);
+        $("#sellPrice").val(sellPrice);
+    });//卖出给合约的价格
+    var buyPrice;
+    mytoken.buyPrice.call(function(err, result){
+        buyPrice = Number(result)/Math.pow(10,16);
+        $(".buyPrice").text(buyPrice);
+        $("#buyPrice").val(buyPrice);
+    });//买入价格
+
+    var drop;
+	mytoken.drop.call(function(err, result){
+        drop = result;
+        if(drop){
+            $(".drop").attr("class", "drop badge badge-success").text("开启");
+            $("#setdrop").attr("class", "btn btn-success closeDrop").text("关闭空投");
+        }else{
+            $(".drop").attr("class", "drop badge badge-danger").text("关闭");
+            $("#setdrop").attr("class", "btn btn-outline-danger openDrop").text("开启空投");
+        }
+    });//开启/关闭空投
+    var airDrop
+    mytoken.airDrop.call(function(err, result){
+        airDrop = Number(result)/Math.pow(10,decimals);
+        $(".airDrop").text(airDrop);
+        $("#airDrop").val(airDrop);
+    });//单账户空投数量
+    var currentDrop;
+    mytoken.currentDrop.call(function(err, result){
+        currentDrop = Number(result)/Math.pow(10,decimals);
+        $(".currentDrop").text(currentDrop);
+    });//当前空投量
+    var totalDrop;
+    mytoken.totalDrop.call(function(err, result){
+        totalDrop = Number(result)/Math.pow(10,decimals);
+        $(".totalDrop").text(totalDrop);
+        $("#totalDrop").val(totalDrop);
+    });//空投总量
+    var dropStart;
+	mytoken.dropStart.call(function(err, result){
+        dropStart = result;
+        if(dropStart > 0){
+            $(".dropStart").text(new Date(dropStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+            $("#dropStart").val(new Date(dropStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        }else{
+            $(".dropStart").text("无限制");
+        }
+    });//空投开始时间(秒)
+    var dropEnd;
+	mytoken.dropEnd.call(function(err, result){
+        dropEnd = result;
+        if(dropEnd > 0){
+            $(".dropEnd").text(new Date(dropEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+            $("#dropEnd").val(new Date(dropEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        }else{
+            $(".dropEnd").text("无限制")
+        }
+    });//空投结束时间(秒)
+
+    var minEtherForAccounts;
+    mytoken.minEtherForAccounts.call(function(err, result){
+        minEtherForAccounts = Number(result)/Math.pow(10,18);
+        $(".minEtherForAccounts").text(minEtherForAccounts);
+    });//交易时最少持有以太币量
+    var powers;
+	mytoken.powers.call(function(err, result){
+        powers = result;
+        $(".powers").text(powers);
+        $("#powers").val(powers);
+    });//每月持币激励百分比
+    var users;
+	mytoken.users.call(function(err, result){
+        users = result;
+        $(".users").text(users);
+        $("#users").val(users);
+    });//持币的人数(即每月激励中加权平均的基数)
+    var minToken;
+    mytoken.minToken.call(function(err, result){
+        minToken = Number(result)/Math.pow(10,decimals);
+        $(".minToken").text(minToken);
+        $("#minToken").val(minToken);
+    });//领取每月激励的账户最少持有代币量
+    var count;
+	mytoken.count.call(function(err, result){
+        count = result;
+        $(".count").text(count);
+        $("#count").val(count);
+    });//可以领取激励的人数
+
+    var lock;
+	mytoken.lock.call(function(err, result){
+        lock = result;
+        if(lock){
+            $(".lock").attr("class", "lock badge badge-danger").text("关闭");
+            $("#setlock").attr("class", "btn btn-outline-danger openLock").text("开启交易功能");
+            $(".withlock").attr("disabled","disabled");
+        }else{
+            $(".lock").attr("class", "lock badge badge-success").text("开启");
+            $("#setlock").attr("class", "btn btn-success closeLock").text("关闭交易功能");
+        }
+    });//锁定(true)/解锁(false)交易
+    var sellToContract;
+	mytoken.sellToContract.call(function(err, result){
+        sellToContract = result;
+        if(sellToContract){
+            $(".sellToContract").attr("class", "sellToContract badge badge-success").text("开启");
+            $("#setsellToContract").attr("class", "btn btn-success closesellToContract").text("关闭兑换ETH");
+        }else{
+            $(".sellToContract").attr("class", "sellToContract badge badge-danger").text("关闭");
+            $("#setsellToContract").attr("class", "btn btn-outline-danger opensellToContract").text("开启兑换ETH");
+            $(".withsell").attr("disabled","disabled");
+        }
+    });//允许卖代币给这个合约以换取ether
+    var myaddress = web3.eth.defaultAccount;
+    var owner;
+	mytoken.owner.call(function(err, result){
+        owner = result;
+        console.log(owner);
+    });
+    var initialized;
+	mytoken.initialized.call(myaddress, function(err, result){
+        initialized = result;
+    });
+    var balances;
+	mytoken.balances.call(myaddress, function(err, result){
+        balances = result/Math.pow(10,decimals);
+    });
+    var frozens;
+	mytoken.frozens.call(myaddress, function(err, result){
+        frozens = result;
+    });
+    var frozenNum;
+	mytoken.frozenNum.call(myaddress, function(err, result){
+        frozenNum = result/Math.pow(10,decimals);
+    });
+    var frozenEnd;
+	mytoken.frozenEnd.call(myaddress, function(err, result){
+        frozenEnd = result;
+    });
 
     for (var i = 0, len = accounts.length; i < len; i++){
-        var _accountether = Number(mytoken.getEther.call(accounts[i]))/Math.pow(10,18);
-        var _balanceOf = (Number(mytoken.balances.call(accounts[i]))/Math.pow(10,decimals)).toFixed(2);
-        $("#accountId").append('<option id="'+accounts[i]+'" value="'+accounts[i]+'">'+accounts[i]+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
-        isowner(accounts[i]);
+        var account = accounts[i];
+        var _accountether;
+        web3.eth.getBalance(account, function(err, result){
+            _accountether = Number(result)/Math.pow(10,18);
+            var _balanceOf;
+            mytoken.balances.call(account, function(err2, result2){
+                _balanceOf = (Number(result2)/Math.pow(10,decimals)).toFixed(2);
+                $("#accountId").append('<option id="'+account+'" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
+            });
+        });
+        isowner(account);
     }
-
+/**
     $("#" + myaddress).attr("selected", "selected");
     $(".initialized").text(initialized?"已经空投":"没有空投");
     $(".balances").text(balances+" "+symbol);
@@ -190,7 +319,7 @@ $(document).ready(function(){
             $(".tokenETH").text(tokenETH);
         }
     });*/
-
+/**
     function sleep(d){
         for(var t = Date.now();Date.now() - t <= d;){}
     }
@@ -685,7 +814,7 @@ $(document).ready(function(){
         }
         $(this).removeAttr("disabled").text(symbol+"兑换ETH");
     });
-
+*/
     function isowner(_address) {
         if (_address == owner) {
             $("#setlock").click(function () {
@@ -1530,5 +1659,4 @@ $(document).ready(function(){
 
         }
     }
-
 });
