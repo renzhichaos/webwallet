@@ -73,15 +73,23 @@ $(document).ready(function(){
     $(".tokenAddress").text(tokenAddress);
     var mytokenContract = web3.eth.contract(abi);
     var mytoken = mytokenContract.at(tokenAddress);
-    var tokenETH = new Promise(function (resolve, reject){web3.eth.getBalance(tokenAddress, function(err, result){
-		if(!err){
-            tokenETH = Number(result)/Math.pow(10,18);
-            $(".tokenETH").text(tokenETH);
-			resolve(tokenETH);
-		}else{
-			console.error(err);
-		}
-	});});
+
+    function getEth(_address) {
+        var geteth = new Promise(function (resolve, reject){web3.eth.getBalance(_address, function(err, result){
+            if(!err){
+                geteth = result;
+                resolve(geteth);
+            }else{
+                console.error(err);
+            }
+        });});
+        return geteth;
+    }
+
+    var tokenETH = getEth(tokenAddress).then(function(data){
+        tokenETH = Number(data)/Math.pow(10,18);
+        $(".tokenETH").text(tokenETH);
+    });
 
     var name = new Promise(function (resolve, reject){mytoken.name.call(function(err, result){
 		if(!err){
@@ -328,50 +336,94 @@ $(document).ready(function(){
     var myaddress = web3.eth.defaultAccount;
     console.log("myaddress:"+myaddress);
 
-    var initialized = new Promise(function (resolve, reject){mytoken.initialized.call(myaddress, function(err, result){
-		if(!err){
-            initialized = result;
-            $(".initialized").text(initialized?"已经空投":"没有空投");
-			resolve(initialized);
-		}else{
-			console.error(err);
-		}
-	});});
-    var balances = new Promise(function (resolve, reject){mytoken.balances.call(myaddress, function(err, result){
-		if(!err){
-            balances = result/Math.pow(10,decimals);
-            $(".balances").text(balances+" "+symbol);
-			resolve(balances);
-		}else{
-			console.error(err);
-		}
-	});});
-    var frozens = new Promise(function (resolve, reject){mytoken.frozens.call(myaddress, function(err, result){
-		if(!err){
-            frozens = result;
-            $(".frozens").text(frozens==0?"没有锁定":"锁定至"+new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-			resolve(frozens);
-		}else{
-			console.error(err);
-		}
-	});});
-    var frozenEnd = new Promise(function (resolve, reject){mytoken.frozenEnd.call(myaddress, function(err, result){
-		if(!err){
-            frozenEnd = result;
-			resolve(frozenEnd);
-		}else{
-			console.error(err);
-		}
-	});});
-    var frozenNum = new Promise(function (resolve, reject){mytoken.frozenNum.call(myaddress, function(err, result){
-		if(!err){
-            frozenNum = result/Math.pow(10,decimals);
-            $(".frozenNum").text(frozenNum==0?"没有锁仓":"锁仓"+frozenNum+" "+symbol+"至"+new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-			resolve(frozenNum);
-		}else{
-			console.error(err);
-		}
-	});});
+    function getInitialized(_address) {
+        var initialize = new Promise(function (resolve, reject){mytoken.initialized.call(_address, function(err, result){
+            if(!err){
+                initialize = result;
+                resolve(initialize);
+            }else{
+                console.error(err);
+            }
+        });});
+        return initialize;
+    }
+
+    var initialized = getInitialized(myaddress).then(function(data){
+        initialized = data;
+        $(".initialized").text(initialized?"已经空投":"没有空投");
+    });
+
+    function getBalances(_address) {
+        var getbalances = new Promise(function (resolve, reject){mytoken.balances.call(_address, function(err, result){
+            if(!err){
+                getbalances = result;
+                resolve(getbalances);
+            }else{
+                console.error(err);
+            }
+        });});
+        return getbalances;
+    }
+
+    var balances = getBalances(myaddress).then(function(data){
+        balances = data/Math.pow(10,decimals);
+        $(".balances").text(balances+" "+symbol);
+    });
+
+    function getFrozens(_address) {
+        var getfrozens = new Promise(function (resolve, reject) {mytoken.frozens.call(_address, function (err, result) {
+                if (!err) {
+                    getfrozens = result;
+                    resolve(getfrozens);
+                } else {
+                    console.error(err);
+                }
+            });
+        });
+        return getfrozens;
+    }
+
+    var frozens = getFrozens(myaddress).then(function(data){
+        frozens = data;
+        $(".frozens").text(frozens == 0 ? "没有锁定" : "锁定至" + new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+    });
+
+    function getFrozenEnd(_address) {
+        var getfrozenEnd = new Promise(function (resolve, reject) {
+            mytoken.frozenEnd.call(_address, function (err, result) {
+                if (!err) {
+                    getfrozenEnd = result;
+                    resolve(getfrozenEnd);
+                } else {
+                    console.error(err);
+                }
+            });
+        });
+        return getfrozenEnd;
+    }
+
+    var frozenEnd = getFrozenEnd(myaddress).then(function(data){
+        frozenEnd = data;
+    });
+
+    function getFrozenNum(_address) {
+        var getfrozenNum = new Promise(function (resolve, reject) {
+            mytoken.frozenNum.call(_address, function (err, result) {
+                if (!err) {
+                    getfrozenNum = result;
+                    resolve(getfrozenNum);
+                } else {
+                    console.error(err);
+                }
+            });
+        });
+        return getfrozenNum;
+    }
+
+    var frozenNum = getFrozenNum(myaddress).then(function(data){
+        frozenNum = data/ Math.pow(10, decimals);
+        $(".frozenNum").text(frozenNum == 0 ? "没有锁仓" : "锁仓" + frozenNum + " " + symbol + "至" + new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+    });
 
     var owner = new Promise(function (resolve, reject){
         mytoken.owner.call(function(err, result){
@@ -392,16 +444,10 @@ $(document).ready(function(){
             }
     });});
 
-    var myeth = new Promise(function (resolve, reject){
-        web3.eth.getBalance(myaddress, function(err, result){
-            if(!err){
-                myeth = Number(result)/Math.pow(10, 18);
-                $(".eth").text(myeth+" ETH");
-                resolve(myeth);
-            }else{
-                console.error(err);
-            }
-        });});
+    var myeth = getEth(myaddress).then(function(data){
+        myeth = Number(data)/Math.pow(10, 18);
+        $(".eth").text(myeth+" ETH");
+    });
 
     var datetime = new Promise(function (resolve, reject){
         mytoken.getTime.call(function(err, result){
@@ -422,12 +468,10 @@ $(document).ready(function(){
 
     for (var i = 0, len = accounts.length; i < len; i++){
         var account = accounts[i];
-        var _accountether;
-        web3.eth.getBalance(account, function(err, result){
-            _accountether = Number(result)/Math.pow(10,18);
-            var _balanceOf;
-            mytoken.balances.call(account, function(err2, result2){
-                _balanceOf = (Number(result2)/Math.pow(10,decimals)).toFixed(2);
+        var _accountether = getEth(account).then(function(data){
+            _accountether = Number(data)/Math.pow(10,18);
+            var _balanceOf = getBalances(account).then(function(data2){
+                _balanceOf = (Number(data2)/Math.pow(10,decimals)).toFixed(2);
                 $("#accountId").append('<option id="'+account+'" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
                 $("#accountId").append('<option id="'+account+'s" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
             });
@@ -443,12 +487,10 @@ $(document).ready(function(){
             $("#accountId").children().remove();
             for (var i = 0, len = accounts.length; i < len; i++){
                 var account = accounts[i];
-                var _accountether;
-                web3.eth.getBalance(account, function(err, result){
-                    _accountether = Number(result)/Math.pow(10,18);
-                    var _balanceOf;
-                    mytoken.balances.call(account, function(err2, result2){
-                        _balanceOf = (Number(result2)/Math.pow(10,decimals)).toFixed(2);
+                var _accountether = getEth(account).then(function(data){
+                    _accountether = Number(data)/Math.pow(10,18);
+                    var _balanceOf = getBalances(account).then(function(data2){
+                        _balanceOf = (Number(data2)/Math.pow(10,decimals)).toFixed(2);
                         $("#accountId").append('<option id="'+account+'" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
                     });
                 });
@@ -456,7 +498,7 @@ $(document).ready(function(){
 
         }
     }, 10000);
-
+here
     $("#accountId").change(function() {
         web3.eth.defaultAccount = $("#accountId").val();
         myaddress = web3.eth.defaultAccount;
@@ -637,7 +679,7 @@ $(document).ready(function(){
         var toAmount = $("#toAmount").val();
         var amount = Number($("#toAmount").val()) * Math.pow(10,decimals);
 
-        var _balances = balances;
+        var _balances = balances * Math.pow(10, decimals);
         if (Math.round(new Date().getTime()/1000) <= frozenEnd) {
             _balances = _balances - frozenNum;
         }
@@ -715,8 +757,16 @@ $(document).ready(function(){
         var fromtoAmount = $("#fromtoAmount").val();
         var amount = Number($("#fromtoAmount").val()) * Math.pow(10,decimals);
 
-        var _balances = Number(mytoken.balances.call(fromAddress));
-        if (Math.round(new Date().getTime()/1000) <= mytoken.frozenEnd.call(fromAddress)) {
+        var _balances = new Promise(function (resolve, reject){mytoken.balances.call(fromAddress, function(err, result){
+            if(!err){
+                _balances = result;
+                resolve(_balances);
+            }else{
+                console.error(err);
+            }
+        });});
+         var nowsecond = Math.round(new Date().getTime()/1000);
+        if (nowsecond <= mytoken.frozenEnd.call(fromAddress)) {
             _balances = _balances - mytoken.frozenNum.call(fromAddress);
         }
         if (Math.round(new Date().getTime()/1000) > mytoken.frozens.call(myaddress) && isAddress && myaddress != fromtoAddress && (myaddress == owner || !lock) && fromtoAmount >= 0.01 && amount <= _balances && amount <= mytoken.allowance.call(fromAddress, myaddress)) {
