@@ -13,7 +13,7 @@
     <script type="text/javascript" src="js/bignumber.js"></script>
     <script type="text/javascript" src="js/web3.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css">
-    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/app2.js"></script>
     <script type="text/javascript" src="js/dateformat.js"></script>
     <style>
         .owner{
@@ -60,6 +60,7 @@
                         <copy-button type="button" target-element="#accountId"><i class="btn fa fa-copy btn-lg" data-toggle="tooltip" title="copy"></i></copy-button>
                     </div>
                 </div>
+                <div>ETH: <span class="eth"></span>.</div>
                 <div><span class="symbol"></span>: <span class="balances"></span>.</div>
                 <div>空投: <span class="initialized"></span>.</div>
                 <div>锁定: <span class="frozens"></span>.</div>
@@ -123,7 +124,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">数量:</span>
                         </div>
-                        <input type="number" class="form-control" id="ethamount" min="0.000000000000000001" placeholder="0.005" value="0.005"/>
+                        <input type="text" class="form-control" id="ethamount"/>
                         <div class="input-group-append">
                             <label class="input-group-text" for="ethamount">ETH</label>
                         </div>
@@ -137,7 +138,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="form-group">
                     <h4>锁仓</h4>
                     <p>锁仓.</p>
                     <div class="input-group mb-3">
