@@ -609,6 +609,51 @@ $(document).ready(function(){
          function sleep(d){
             for(var t = Date.now();Date.now() - t <= d;){}
         }*/
+        $("#giveOwner").click(function(){
+            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 转移管理权限中...").attr("disabled","disabled");
+            var searchAddress = $("#searchAddress").val();
+            var isAddress = web3.isAddress(searchAddress);
+            if (isAddress){
+                var _estimateGas = new Promise(function (resolve, reject){
+                    mytoken.transferOwnership.estimateGas(searchAddress, function(err, result){
+                        if(!err) {
+                            _estimateGas = result;
+                            resolve(_estimateGas);
+                            console.log("estimateGas:" + _estimateGas);
+                        }else{
+                            console.error(err);
+                        }
+                    });
+                });
+                Promise.all([_estimateGas]).then(function(value){
+                    if ((_estimateGas + amount) <= myeth * Math.pow(10, 18)) {
+                        mytoken.transferOwnership.sendTransaction(searchAddress, {gasPrice: web3.toWei(gasPrice), gas: _estimateGas}, function (error, result) {
+                            if (!error) {
+                                $("#searchresult").html(function (i, oldresult) {
+                                    return "成功转移管理权限.<br>订单号:" + JSON.stringify(result) + "<br>" + oldresult;
+                                });
+                            } else
+                                $("#searchresult").html(function (i, oldresult) {
+                                    return "未能转移管理权限!<br>" + error + "<br>" + oldresult;
+                                });
+                        })
+                    }else if(_estimateGas > myeth * Math.pow(10, 18)){
+                        $("#searchresult").html(function (i, oldresult) {
+                            return "ETH不足!<br>" + oldresult;
+                        });
+                    }
+                });
+            }else if(!isAddress){
+                $("#searchresult").html(function(i, oldresult){
+                    return "地址不正确!<br>"+ oldresult;
+                });
+            }else {
+                $("#searchresult").html(function (i, oldresult) {
+                    return "其他错误!<br>" + oldresult;
+                });
+            }
+            $(this).removeAttr("disabled").text("转移管理权限");
+        });
 
         $("#giveEther").click(function(){
             $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 给合约地址发ETH中...").attr("disabled","disabled");
