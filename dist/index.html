@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <script src="./assets/jquery.min.js"></script>
+    <script src="./assets/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="./assets/bignumber.js"></script>
+    <script type="text/javascript" src="./assets/web3.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var transactionDetailsLinks = {
+            '1': 'https://www.etherscan.io/',
+            '4': 'https://rinkeby.etherscan.io/',
+            '3': 'https://ropsten.etherscan.io/',
+            '42': 'https://kovan.etherscan.io/'
+        };
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+            $("#alert").attr("class", "alert alert-success").html("您已连接到<a target='_blank' id='"+web3.version.network+"' href='"+transactionDetailsLinks[web3.version.network]+"'>"+transactionDetailsLinks[web3.version.network]+"</a>");
+            $("#submitContract").click(function(){
+                var contract = $("#contract").val();
+                if(web3.isAddress(contract)){
+                    window.location.href = window.location.href.replace(/index/g, "token") + "?" + contract;
+                }else{
+                    $("#pop").css("display","inline").fadeOut(3000);
+                    $("#contract").val("");
+                }
+            });
+            $('#contract').bind('input propertychange', function() {
+                console.log(web3.isAddress($("#contract").val()));
+                $("#"+web3.version.network).attr("href", transactionDetailsLinks[web3.version.network]+($("#contract").val()!=""&&web3.isAddress($("#contract").val())?"address/"+$("#contract").val():"")).text(transactionDetailsLinks[web3.version.network]+($("#contract").val()!=""&&web3.isAddress($("#contract").val())?"address/"+$("#contract").val():""));
+            });
+            $('#contract').hover(function() {
+                $("#"+web3.version.network).attr("href", transactionDetailsLinks[web3.version.network]+($("#contract").val()!=""&&web3.isAddress($("#contract").val())?"address/"+$("#contract").val():"")).text(transactionDetailsLinks[web3.version.network]+($("#contract").val()!=""&&web3.isAddress($("#contract").val())?"address/"+$("#contract").val():""));
+            });
+        } else {
+            // set the provider you want from Web3.providers
+            $("#alert").attr("class", "alert alert-danger").html("您还没有连接到Ethereum! 请安装并登录到<a target='_blank' href='https://metamask.io/'>MetaMask</a>");
+            $("#submitContract").click(function(){
+                $('#myModal').modal('show');
+            });
+        }
+    });
+    </script>
+    <style>
+        #pop{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <div class="col-md-2 column">
+                </div>
+                <div class="col-md-8 column">
+                    <h3 class="text-center">
+                        Token管理
+                    </h3>
+                    <div class="alert alert-danger" role="alert" id="alert">
+                    </div>
+                    <div class="form-group">
+                        <label for="contract">合约地址: <span class="badge badge-danger" id="pop">合约地址不正确, 请重新输入!</span></label>
+                        <div>
+                            <input type="text" class="form-control" id="contract" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-outline-primary btn-block" id="submitContract">Go To Token</button>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body alert-danger" role="alert">
+                                    <div>您还没有连接到Ethereum! 请安装并登录到<a target="_blank" href='https://metamask.io/'>MetaMask</a>.
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 column">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

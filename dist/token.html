@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="js/css/bootstrap.min.css">
-    <link rel="stylesheet" href="js/css/bootstrap-datetimepicker.min.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="js/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <meta charset="UTF-8">
+    <title>Token</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap-datetimepicker.min.css">
+    <script src="./assets/jquery.min.js"></script>
+    <script src="./assets/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 
-    <script type="text/javascript" src="js/bignumber.js"></script>
-    <script type="text/javascript" src="js/web3.min.js"></script>
+    <script type="text/javascript" src="./assets/bignumber.js"></script>
+    <script type="text/javascript" src="./assets/web3.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css">
-    <script type="text/javascript" src="js/app2.js"></script>
-    <script type="text/javascript" src="js/dateformat.js"></script>
+    <script type="text/javascript" src="./assets/app.js"></script>
+    <script type="text/javascript" src="./assets/dateformat.js"></script>
     <style>
         .owner{
             display: none;
@@ -28,8 +29,9 @@
         </div>
         <div class="col-md-8 column">
             <div class="form-group">
-                <h2><span class="name"></span>(<span class="symbol"></span>)</h2>
-                <h4>version:<span class="version"></span> node:<span class="node"></span> network:<span class="network"></span> ethereum:<span class="ethereum"></span></h4>
+                <h2><span class="name"></span></h2>
+                <div>连接网络: <span class="network"></span></div>
+                <div>连接节点: <span class="badge badge-success node"></span></div>
                 <div><span class="symbol"></span>所在地址: <span class="tokenAddress"></span>(<span class="tokenETH"></span> ETH).</div>
                 <div>发行总量: <span class="totalSupply"></span> <span class="symbol"></span>.</div>
                 <div>交易状态: <span class="lock"></span>.</div>
