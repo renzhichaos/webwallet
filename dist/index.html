@@ -24,7 +24,7 @@
             $("#submitContract").click(function(){
                 var contract = $("#contract").val();
                 if(web3.isAddress(contract)){
-                    window.location.href = window.location.href.replace(/index/g, "token") + "?" + contract;
+                     window.location.replace("./token.html?" + contract);
                 }else{
                     $("#pop").css("display","inline").fadeOut(3000);
                     $("#contract").val("");

@@ -487,7 +487,8 @@ $(document).ready(function(){
         }
         $(".initialized").text(initialized?"已经空投":"没有空投");
         $(".balances").text(balances+" "+symbol);
-        $(".frozens").text(frozens == 0 ? "没有锁定" : "锁定至" + new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        var nowsecond = Math.round(new Date().getTime()/1000);
+        $(".frozens").text(nowsecond > frozens ? "没有锁定" : "锁定至" + new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
         $(".frozenNum").text(frozenNum == 0 ? "没有锁仓" : "锁仓" + frozenNum + " " + symbol + "至" + new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
         if(myaddress==owner){
             $("#transfer").removeAttr("disabled");
@@ -509,7 +510,6 @@ $(document).ready(function(){
                 var _balanceOf = getBalances(account).then(function(data2){
                     _balanceOf = (Number(data2)/Math.pow(10,decimals)).toFixed(2);
                     $("#accountId").append('<option id="'+account+'" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
-                    $("#accountId").append('<option id="'+account+'s" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
                 });
             });
         }
@@ -574,7 +574,8 @@ $(document).ready(function(){
                 $(".eth").text(myeth+" ETH");
                 $(".initialized").text(initialized?"已经空投":"没有空投");
                 $(".balances").text(balances+" "+symbol);
-                $(".frozens").text(frozens==0?"没有锁定":"锁定至"+new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+                var nowsecond = Math.round(new Date().getTime()/1000);
+                $(".frozens").text(nowsecond > frozens?"没有锁定":"锁定至"+new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
                 $(".frozenNum").text(frozenNum==0?"没有锁仓":"锁仓"+frozenNum+" "+symbol+"至"+new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
                 if(myaddress==owner){
                     $("#transfer").removeAttr("disabled");
@@ -1498,14 +1499,6 @@ $(document).ready(function(){
                                     $("#result").html(function (i, oldresult) {
                                         return "成功增发" + toAmount + " " + symbol + "给" + toAddress + "<br>" + JSON.stringify(result) + "<br>" + oldresult;
                                     });
-                                    totalSupply = Number(mytoken.totalSupply.call()) / Math.pow(10, decimals);
-                                    $(".totalSupply").text(totalSupply);
-                                    var myether = Number(mytoken.getEther.call(myaddress)) / Math.pow(10, 18);
-                                    var mybalance = (Number(mytoken.balances.call(myaddress)) / Math.pow(10, decimals)).toFixed(2);
-                                    var toether = Number(mytoken.getEther.call(toAddress)) / Math.pow(10, 18);
-                                    var tobalance = (Number(mytoken.balances.call(toAddress)) / Math.pow(10, decimals)).toFixed(2);
-                                    $("#" + myaddress).text(myaddress + '(' + myether + ' ETH)(' + mybalance + ' ' + symbol + ')');
-                                    $("#" + toAddress).text(toAddress + '(' + toether + ' ETH)(' + tobalance + ' ' + symbol + ')');
                                 } else
                                     $("#result").html(function (i, oldresult) {
                                         return "未能增发" + toAmount + " " + symbol + "<br>" + error + "<br>" + oldresult;
@@ -1608,7 +1601,8 @@ $(document).ready(function(){
                 });//查询锁定
                 Promise.all([_frozens]).then(function(value) {
                     $("#searchresult").html(function (i, oldresult) {
-                        return searchAddress + ": " + (_frozens != 0 ? "锁定状态" : "没有锁定") + ".<br>" + oldresult;
+                        var nowsecond = Math.round(new Date().getTime()/1000);
+                        return searchAddress + ": " + (nowsecond > _frozens ? "没有锁定" : "锁定至" + new Date(_frozens * 1000).Format("yyyy-MM-dd hh:mm:ss")) + ".<br>" + oldresult;
                     });
                 });
             } else {
@@ -2093,7 +2087,7 @@ $(document).ready(function(){
         $("#setMinEther").click(function(){
             $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 设置账号的最少持有ETH量中...").attr("disabled","disabled");
             var _amount = $("#amount").val();
-            var amount = Number($("#amount").val()) * Math.pow(10,3);
+            var amount = Number($("#amount").val()) * Math.pow(10, 3);
             var _estimateGas = new Promise(function (resolve, reject){
                 mytoken.setMinEther.estimateGas(amount, function(err, result){
                     if(!err) {
