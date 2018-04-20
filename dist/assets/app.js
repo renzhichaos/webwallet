@@ -2,9 +2,22 @@ $(document).ready(function(){
     if (typeof web3 !== 'undefined') {
         console.log('Web3 Detected! ' + web3.currentProvider.constructor.name);
         window.web3 = new Web3(web3.currentProvider);
+        if(web3.eth.coinbase==null){
+            console.log("node not login!");
+            window.location.href = "./index.html";
+        }else{
+            console.log("node login!"+web3.eth.coinbase);
+        }
     } else {
         console.log('No Web3 Detected... using HTTP Provider');
         window.location.href = "./index.html";
+    }
+    var connected = web3.isConnected();
+    if(!connected){
+        console.log("node not connected!");
+        window.location.href = "./index.html";
+    }else{
+        console.log("node connected");
     }
     var url = window.location.href;
     var token = url.split("?");
@@ -18,7 +31,7 @@ $(document).ready(function(){
         'Ropsten': 'https://ropsten.etherscan.io/',
         'Kovan': 'https://kovan.etherscan.io/'
     };
-    var transactionDetailsLinks = {
+    var txlinks = {
         'Mainnet': 'https://www.etherscan.io/tx/',
         'Rinkeby': 'https://rinkeby.etherscan.io/tx/',
         'Ropsten': 'https://ropsten.etherscan.io/tx/',
@@ -52,6 +65,8 @@ $(document).ready(function(){
             console.log('This is an unknown network.');
     }
     $(".network").html("<a class='badge badge-success' target='_blank' href='"+links[network]+"address/"+tokenAddress+"'>"+network+"</a>");
+
+    var txurl = txlinks[network];
 
     var version = web3.version.api;
     $(".version").text(version);
@@ -469,6 +484,21 @@ $(document).ready(function(){
         $("#minToken").val(minToken);
         $(".count").text(count);
         $("#count").val(count);
+
+        $(".initialized").text(initialized?"已经空投":"没有空投");
+        $(".balances").text(balances+" "+symbol);
+        var nowsecond = Math.round(new Date().getTime()/1000);
+        $(".frozens").text(nowsecond > frozens ? "没有锁定" : "锁定至" + new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        $(".frozenNum").text(frozenNum == 0 ? "没有锁仓" : "锁仓" + frozenNum + " " + symbol + "至" + new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+        if(myaddress==owner){
+            $("#transfer").removeAttr("disabled");
+            $(".notowner").attr("disabled","disabled");
+            $(".owner").show();
+        }else{
+            $(".notowner").removeAttr("disabled");
+            $(".owner").hide();
+        }
+
         if(lock){
             $(".lock").attr("class", "lock badge badge-danger").text("关闭");
             $("#setlock").attr("class", "btn btn-outline-danger openLock").text("开启交易功能");
@@ -485,19 +515,7 @@ $(document).ready(function(){
             $("#setsellToContract").attr("class", "btn btn-outline-danger opensellToContract").text("开启兑换ETH");
             $(".withsell").attr("disabled","disabled");
         }
-        $(".initialized").text(initialized?"已经空投":"没有空投");
-        $(".balances").text(balances+" "+symbol);
-        var nowsecond = Math.round(new Date().getTime()/1000);
-        $(".frozens").text(nowsecond > frozens ? "没有锁定" : "锁定至" + new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        $(".frozenNum").text(frozenNum == 0 ? "没有锁仓" : "锁仓" + frozenNum + " " + symbol + "至" + new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        if(myaddress==owner){
-            $("#transfer").removeAttr("disabled");
-            $(".notowner").attr("disabled","disabled");
-            $(".owner").show();
-        }else{
-            $(".notowner").removeAttr("disabled");
-            $(".owner").hide();
-        }
+
         $(".eth").text(myeth+" ETH");
 
         var accounts = web3.eth.accounts;
@@ -531,6 +549,66 @@ $(document).ready(function(){
                         });
                     });
                 }
+
+                myaddress = web3.eth.defaultAccount;
+
+                myeth = getEth(myaddress).then(function(data){
+                    myeth = Number(data)/Math.pow(10, 18);
+                    return myeth;
+                });
+
+                initialized = getInitialized(myaddress).then(function(data){
+                    initialized = data;
+                    return initialized;
+                });
+
+                balances = getBalances(myaddress).then(function(data){
+                    balances = data/Math.pow(10,decimals);
+                    return balances;
+                });
+
+                frozens = getFrozens(myaddress).then(function(data){
+                    frozens = data;
+                    return frozens;
+                });
+
+                frozenEnd = getFrozenEnd(myaddress).then(function(data){
+                    frozenEnd = data;
+                    return frozenEnd;
+                });
+
+                frozenNum = getFrozenNum(myaddress).then(function(data){
+                    frozenNum = data/ Math.pow(10, decimals);
+                    return frozenNum;
+                });
+
+                Promise.all([myeth, initialized, balances, frozens, frozenEnd, frozenNum]).then(function (values) {
+                    console.log(JSON.stringify(values));
+                    $(".eth").text(myeth+" ETH");
+                    $(".initialized").text(initialized?"已经空投":"没有空投");
+                    $(".balances").text(balances+" "+symbol);
+                    var nowsecond = Math.round(new Date().getTime()/1000);
+                    $(".frozens").text(nowsecond > frozens?"没有锁定":"锁定至"+new Date(frozens * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+                    $(".frozenNum").text(frozenNum==0?"没有锁仓":"锁仓"+frozenNum+" "+symbol+"至"+new Date(frozenEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
+                    if(myaddress==owner){
+                        $("#transfer").removeAttr("disabled");
+                        $(".notowner").attr("disabled","disabled");
+                        $(".owner").show();
+                    }else{
+                        $(".notowner").removeAttr("disabled");
+                        $(".owner").hide();
+                    }
+                    if(lock){
+                        $(".withlock").attr("disabled","disabled");
+                    }else{
+                        $(".withlock").removeAttr("disabled");
+                    }
+                    if(sellToContract){
+                        $(".withsell").removeAttr("disabled");
+                    }else{
+                        $(".withsell").attr("disabled","disabled");
+                    }
+                });
 
             }
         }, 10000);
@@ -595,20 +673,26 @@ $(document).ready(function(){
                 }else{
                     $(".withsell").attr("disabled","disabled");
                 }
-            })
+            });
         });
 
-        /*var filter = web3.eth.filter(tokenAddress);
+        /*
+        var filter = web3.eth.filter(transactionHash);
         filter.watch(function(error, result){
             if (!error) {
                 console.log(result);
-                tokenETH = Number(web3.eth.getBalance(tokenAddress))/Math.pow(10, 18);
-                $(".tokenETH").text(tokenETH);
             }
         });
-         function sleep(d){
+        var myResults = filter.get(function(error, logs){
+            if (!error) {
+                if(logs.transactionIndex);
+            }
+        });
+
+        function sleep(d){
             for(var t = Date.now();Date.now() - t <= d;){}
         }*/
+
         $("#giveOwner").click(function(){
             $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 转移管理权限中...").attr("disabled","disabled");
             var searchAddress = $("#searchAddress").val();
@@ -678,6 +762,22 @@ $(document).ready(function(){
                                 $("#ethamountresult").html(function (i, oldresult) {
                                     return "成功给合约地址发ETH:" + ethamount + " ETH<br>订单号:" + JSON.stringify(result) + "<br>" + oldresult;
                                 });
+                                /*var filter = web3.eth.filter(result);
+                                // filter.watch(function(error, result){
+                                //     if (!error) {
+                                //         console.log("1start");
+                                //         console.log(result);
+                                //         console.log("1end");
+                                //     }
+                                // });
+                                filter.get(function(error, result){
+                                    if (!error) {
+                                        console.log("2start");
+                                        console.log(result);
+                                        console.log("2end");
+                                    }
+                                });*/
+
                             } else
                                 $("#ethamountresult").html(function (i, oldresult) {
                                     return "未能给合约地址发ETH!<br>" + error + "<br>" + oldresult;
@@ -907,7 +1007,7 @@ $(document).ready(function(){
                     });
                 }
             });
-            $(this).removeAttr("disabled").text("发送");
+            $(this).removeAttr("disabled").text("发送授权的"+symbol);
         });
 
         $("#approve").click(function(){
@@ -1108,9 +1208,9 @@ $(document).ready(function(){
                     $("#result").html(function (i, oldresult) {
                         return "销毁授权的地址不正确!<br>" + oldresult;
                     });
-                } else if (toAmount <= 0 || amount > _balances) {
+                } else if (toAmount <= 0 || amount > _balances || amount > allowance) {
                     $("#result").html(function (i, oldresult) {
-                        return "销毁授权的数量不正确!(锁仓:" + mytoken.frozenNum.call(toAddress) + " " + symbol + ")<br>" + oldresult;
+                        return "销毁授权的数量不正确!(授权: " + allowance/Math.pow(10, decimals) + " " + symbol + ")<br>" + oldresult;
                     });
                 } else if (lock) {
                     $("#result").html(function (i, oldresult) {
