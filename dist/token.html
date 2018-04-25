@@ -171,6 +171,29 @@
                 </div>
 
                 <div class="form-group">
+                    <h4>查询<span class="symbol"></span>授权</h4>
+                    <p>查询<span class="symbol"></span>授权.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="allowancefromAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">授权的地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="allowancetoAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="allowance">查询授权</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="allowanceresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <h4>发送/授权<span class="symbol"></span></h4>
                     <p>发送/授权给另外一个账号.</p>
                     <div class="input-group mb-3">
@@ -451,9 +474,12 @@
                 <div class="form-group">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">年月:</span>
+                            <span class="input-group-text">年月激励:</span>
                         </div>
                         <input type="text" class="form-control" id="getyearmonth" placeholder="yyyy-mm" data-date-format="yyyy-mm" readonly="readonly"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="getyearmonth"><span class="monthtoken"></span>&nbsp;<span class="symbol"></span></label>
+                        </div>
                     </div>
                     <div class="btn-group mb-3">
                         <button type="button" disabled="disabled" class="btn btn-outline-primary setMonth notowner" id="getMonth">领取激励</button>

@@ -18,15 +18,15 @@
             '3': 'https://ropsten.etherscan.io/',
             '42': 'https://kovan.etherscan.io/'
         };
+
         if (typeof web3 !== 'undefined') {
             web3 = new Web3(web3.currentProvider);
             var netId = web3.version.network;
-            $("#alert").attr("class", "alert alert-success").html("您已连接到<a target='_blank' id='"+netId+"' href='"+links[netId]+"'>"+links[netId]+"</a>");
 
             $("#submitContract").click(function(){
                 var contract = $("#contract").val();
                 if(web3.isAddress(contract)){
-                     window.location.replace("./token.html?" + contract);
+                    window.location.replace("./token.html?" + contract);
                 }else{
                     $("#pop").css("display","inline").fadeOut(3000);
                     $("#contract").val("");
@@ -50,6 +50,7 @@
                     }
                 });
             }else{
+                $("#alert").attr("class", "alert alert-success").html("您已连接到<a target='_blank' id='"+netId+"' href='"+links[netId]+"'>"+links[netId]+"</a>");
                 console.log("node connected!"+web3.eth.coinbase);
             }
         } else {
@@ -59,6 +60,22 @@
                 $('#myModal').modal('show');
             });
         }
+
+        var watchMetaMask = setInterval(function() {
+            var connected = web3.isConnected();
+            if(!connected || web3.eth.coinbase==null){
+                console.log("node not connected!");
+                $("#alert").attr("class", "alert alert-danger").html("请在MetaMask界面顶部选择网络节点并登录!");
+                $("#submitContract").click(function(){
+                    if(!connected || web3.eth.coinbase==null) {
+                        $('#myModal2').modal('show');
+                    }
+                });
+            }else{
+                $("#alert").attr("class", "alert alert-success").html("您已连接到<a target='_blank' id='"+netId+"' href='"+links[netId]+"'>"+links[netId]+"</a>");
+                console.log("node connected!"+web3.eth.coinbase);
+            }
+        }, 10000);
     });
     </script>
     <style>

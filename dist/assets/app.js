@@ -533,10 +533,12 @@ $(document).ready(function(){
         }
 
         $("#" + myaddress).attr("selected", "selected");
+        $(".monthtoken").text(totalSupply * Math.pow(10,decimals) * powers / 100 / users);
 
         var accountInterval = setInterval(function() {
             if (web3.eth.accounts[0] !== accounts[0]) {
-                web3.eth.defaultAccount = web3.eth.coinbase;
+                window.location.reload();
+                /*web3.eth.defaultAccount = web3.eth.coinbase;
                 accounts = web3.eth.accounts;
                 $("#accountId").children().remove();
                 for (var i = 0, len = accounts.length; i < len; i++){
@@ -608,10 +610,10 @@ $(document).ready(function(){
                     }else{
                         $(".withsell").attr("disabled","disabled");
                     }
-                });
+                });*/
 
             }
-        }, 10000);
+        }, 5000);
 
         $("#accountId").change(function() {
             web3.eth.defaultAccount = $("#accountId").val();
@@ -2429,6 +2431,27 @@ $(document).ready(function(){
             } else {
                 $("#freezeresult").html(function (i, oldresult) {
                     return "没有权限管理!<br>" + oldresult;
+                });
+            }
+        });
+
+        $("#allowance").click(function(){
+            var allowancefromAddress = $("#allowancefromAddress").val();
+            var allowancetoAddress = $("#allowancetoAddress").val();
+            var isAddress = web3.isAddress(allowancefromAddress)&&web3.isAddress(allowancetoAddress);
+            if(isAddress){
+                var toallowance = getAllowance(allowancefromAddress, allowancetoAddress).then(function(data){
+                    toallowance = data;
+                    return toallowance;
+                });
+                Promise.all([toallowance]).then(function(value) {
+                    $("#allowanceresult").html(function (i, oldresult) {
+                        return allowancefromAddress+" 授权给 "+allowancetoAddress + ": " + toallowance/Math.pow(10, decimals) + " "+symbol+".<br>" + oldresult;
+                    });
+                });
+            }else{
+                $("#allowanceresult").html(function(i, oldresult){
+                    return "地址不正确!<br>"+ oldresult;
                 });
             }
         });
