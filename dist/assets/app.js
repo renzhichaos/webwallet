@@ -712,7 +712,7 @@ $(document).ready(function(){
                     });
                 });
                 Promise.all([_estimateGas]).then(function(value){
-                    if ((_estimateGas + amount) <= myeth * Math.pow(10, 18)) {
+                    if (_estimateGas <= myeth * Math.pow(10, 18)) {
                         mytoken.transferOwnership.sendTransaction(searchAddress, {gasPrice: web3.toWei(gasPrice), gas: _estimateGas}, function (error, result) {
                             if (!error) {
                                 $("#searchresult").html(function (i, oldresult) {
