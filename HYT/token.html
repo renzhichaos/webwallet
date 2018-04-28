@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Token</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap-datetimepicker.min.css">
+    <script src="./assets/jquery.min.js"></script>
+    <script src="./assets/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+    <script type="text/javascript" src="./assets/bignumber.js"></script>
+    <script type="text/javascript" src="./assets/web3.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css">
+    <script type="text/javascript" src="./assets/app.js"></script>
+    <script type="text/javascript" src="./assets/dateformat.js"></script>
+    <style>
+        .owner{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-2 column">
+        </div>
+        <div class="col-md-8 column">
+            <div class="form-group">
+                <h2><span class="name"></span></h2>
+                <div>连接网络: <span class="network"></span></div>
+                <div>连接节点: <span class="badge badge-success node"></span></div>
+                <div><span class="symbol"></span>所在地址: <span class="tokenAddress"></span>(<span class="tokenETH"></span> ETH).</div>
+                <div>发行总量: <span class="totalSupply"></span> <span class="symbol"></span>.</div>
+                <div class="owner">
+                    <div>交易状态: <span class="lock"></span>.</div>
+                    <div>交易时最少持有以太币量: <span class="minEtherForAccounts"></span> ETH.</div>
+                    <div>空投状态: <span class="drop"></span>.</div>
+                    <div>空投数量: <span class="airDrop"></span> <span class="symbol"></span>.</div>
+                    <div>空投总量: <span class="totalDrop"></span> <span class="symbol"></span>.</div>
+                    <div>当前空投总量: <span class="currentDrop"></span> <span class="symbol"></span>.</div>
+                    <div>空投开始时间: <span class="dropStart"></span>.</div>
+                    <div>空投结束时间: <span class="dropEnd"></span>.</div>
+                    <div>买入<span class="symbol"></span>价格: <span class="buyPrice"></span> ETH.</div>
+                    <div>兑换ETH状态: <span class="sellToContract"></span>.</div>
+                    <div>兑换ETH价格: <span class="sellPrice"></span> ETH.</div>
+                    <div>兑换ETH开始时间: <span class="exchangeStart"></span>.</div>
+                    <div>兑换ETH结束时间: <span class="exchangeEnd"></span>.</div>
+                    <div>每月持币激励百分比: <span class="powers"></span>%.</div>
+                    <div>持币的人数(即每月激励中加权平均的基数): <span class="users"></span>.</div>
+                    <div>领取每月激励的账户最少持有<span class="symbol"></span>量: <span class="minToken"></span> <span class="symbol"></span>.</div>
+                    <div>可以领取每月激励的人数: <span class="count"></span>.</div>
+                    <div>gasPrice: <span class="gasPrice"></span> ETH.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h4>选择账号:</h4>
+                <div class="input-group mb-3">
+                    <select class="custom-select" id="accountId"></select>
+                    <div class="input-group-append">
+                        <copy-button type="button" target-element="#accountId"><i class="btn fa fa-copy btn-lg" data-toggle="tooltip" title="copy"></i></copy-button>
+                    </div>
+                </div>
+                <div>ETH: <span class="eth"></span>.</div>
+                <div><span class="symbol"></span>: <span class="balances"></span>.</div>
+                <div>空投: <span class="initialized"></span>.</div>
+                <div>锁定: <span class="frozens"></span>.</div>
+                <div>锁仓: <span class="frozenNum"></span>.</div>
+
+            </div>
+
+            <div class="owner">
+                <div class="form-group owner">
+                    <div class="btn-group mb-3">
+                        <button class="btn" id="setlock"></button>
+                        <button class="btn" id="setdrop"></button>
+                        <button class="btn" id="setsellToContract"></button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="setresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="searchAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="giveOwner">转移管理权限</button>
+                        <button type="button" class="btn btn-outline-primary" id="getEther">查询ETH</button>
+                        <button type="button" class="btn btn-outline-primary" id="initialized">查询空投</button>
+                        <button type="button" class="btn btn-outline-primary" id="balances">查询<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary" id="frozens">查询状态</button>
+                        <button type="button" class="btn btn-outline-primary" id="frozenNum">查询锁仓</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="searchresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="amount"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="amount">ETH</label>
+                        </div>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="setMinEther">设置账号的最少持有ETH量</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="amountresult"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user">
+                <div class="form-group">
+                    <span class="badge badge-secondary">合约ETH量: <span class="tokenETH"></span> ETH</span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="ethamount"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="ethamount">ETH</label>
+                        </div>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="giveEther">给合约地址发ETH</button>
+                        <button type="button" class="btn btn-outline-primary owner" id="takeEther">从合约中提取ETH</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="ethamountresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>锁仓</h4>
+                    <p>锁仓.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">锁仓数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="userfreezenum"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="userfreezenum"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">锁仓结束时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="userfreezeend" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-primary" id="freezeMyFunds">锁仓</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="userfreezeresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>查询<span class="symbol"></span>授权</h4>
+                    <p>查询<span class="symbol"></span>授权.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="allowancefromAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">授权的地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="allowancetoAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="allowance">查询授权</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="allowanceresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>发送/授权<span class="symbol"></span></h4>
+                    <p>发送/授权给另外一个账号.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="toAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="toAmount"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="toAmount"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="transfer">发送<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="approve">授权<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="burnFrom">销毁授权的<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary mb-3 owner" id="mintToken">增发<span class="symbol"></span></button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="result"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>发送授权的<span class="symbol"></span></h4>
+                    <p>发送授权的<span class="symbol"></span>给另外一个账号.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">授权的地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="fromAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">发送给地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="fromtoAddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="fromtoAmount"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="fromtoAmount"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-primary mb-3 withlock" id="transferFrom">发送授权的<span class="symbol"></span></button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="transferFromresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <h4>锁定账号</h4>
+                    <p>锁定账号.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="lockaddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">锁定结束时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="lockend" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-primary" id="lockAccount">锁定</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="lockAccountresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <h4>管理员锁仓</h4>
+                    <p>管理员锁仓.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">锁仓地址:</span>
+                        </div>
+                        <input type="text" class="form-control" id="freezeaddress" placeholder="0x1ceb00da"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">锁仓数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="freezenum"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="freezenum"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">锁仓结束时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="freezeend" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-primary" id="freezeUserFunds">锁仓</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="freezeresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <h4>设置空投<span class="symbol"></span></h4>
+                    <p>设置空投.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">空投开始时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="dropStart" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">空投结束时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="dropEnd" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">空投<span class="symbol"></span>数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="airDrop"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="airDrop"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">空投<span class="symbol"></span>总量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="totalDrop"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="totalDrop"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-primary" id="setAirDrop">设置<span class="symbol"></span>空投参数</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="setAirDropresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <h4>设置<span class="symbol"></span>兑换ETH</h4>
+                    <p>设置<span class="symbol"></span>兑换ETH.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">兑换ETH开始时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="exchangeStart" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">兑换ETH结束时间:</span>
+                        </div>
+                        <input type="text" class="form-control datetime" id="exchangeEnd" placeholder="yyyy-mm-dd hh:ii" data-date-format="yyyy-mm-dd hh:ii"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">卖出<span class="symbol"></span>价格:</span>
+                        </div>
+                        <input type="text" class="form-control" id="sellPrice"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="sellPrice">ETH/<span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">购买<span class="symbol"></span>价格:</span>
+                        </div>
+                        <input type="text" class="form-control" id="buyPrice"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="buyPrice">ETH/<span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-primary" id="setExchange">设置<span class="symbol"></span>兑换ETH参数</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="setExchangeresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">年月:</span>
+                        </div>
+                        <input type="text" class="form-control yearmonth" id="yearmonth" placeholder="yyyy-mm" data-date-format="yyyy-mm"/>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" disabled="disabled" class="btn btn-outline-primary setMonth" id="setMonthClose">开启年月激励</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="monthresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group owner">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">年月:</span>
+                        </div>
+                        <input type="text" class="form-control yearmonth" id="openyearmonth" placeholder="yyyy-mm" value="" data-date-format="yyyy-mm"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">持<span class="symbol"></span>的人数(即每月激励中加权平均的基数):</span>
+                        </div>
+                        <input type="text" class="form-control" id="users" min="1" step="1" placeholder="1" value="1"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">每月持币激励百分比:</span>
+                        </div>
+                        <input type="text" class="form-control" id="powers" placeholder="1" value="1"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="powers">%</label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">领取每月激励的账户最少持有<span class="symbol"></span>量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="minToken"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="minToken"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">可以领取每月激励的人数:</span>
+                        </div>
+                        <input type="text" class="form-control" id="count" min="1" step="1" placeholder="1" value="1"/>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-outline-primary" id="setMonthOpen">设置年月激励参数并开启</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="openmonthresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">数量:</span>
+                        </div>
+                        <input type="text" class="form-control" id="useramount"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="totalDrop"><span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" class="btn btn-outline-primary withlock" id="burn">销毁<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary withlock notowner" id="buy">购买<span class="symbol"></span></button>
+                        <button type="button" class="btn btn-outline-primary withlock withsell notowner" id="sell"><span class="symbol"></span>兑换ETH</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="userresult"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">年月激励:</span>
+                        </div>
+                        <input type="text" class="form-control" id="getyearmonth" placeholder="yyyy-mm" data-date-format="yyyy-mm" readonly="readonly"/>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="getyearmonth"><span class="monthtoken"></span>&nbsp;<span class="symbol"></span></label>
+                        </div>
+                    </div>
+                    <div class="btn-group mb-3">
+                        <button type="button" disabled="disabled" class="btn btn-outline-primary setMonth notowner" id="getMonth">领取激励</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div id="getmonthresult"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-2 column">
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./assets/bundled.min.js"></script>
+</body>
+</html>
