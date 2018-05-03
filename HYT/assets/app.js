@@ -312,7 +312,7 @@ $(document).ready(function(){
     });
 
     function getBalances(_address) {
-        var getbalances = new Promise(function (resolve, reject){mytoken.balances.call(_address, function(err, result){
+        var getbalances = new Promise(function (resolve, reject){mytoken.balanceOf.call(_address, function(err, result){
             if(!err){
                 getbalances = result;
                 resolve(getbalances);
