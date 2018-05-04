@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'My First Angular App MyWallet!';
+  tokensinfo = 'My Tokens';
+  walletsinfo = 'My Wallets';
 }
