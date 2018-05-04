@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OurWallet</title>
+    <script type="text/javascript" src="./js/polyfill.min.js"></script>
+    <script type="text/javascript" src="./js/ethjs-account.min.js"></script>
+    <script type="text/javascript" src="./js/ethjs.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3 class="text-center">
+                Our Token
+            </h3>
+            <div class="tabbable" id="tabs-69572">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a href="#createwallet" data-toggle="tab">创建钱包</a>
+                    </li>
+                    <li class="active">
+                        <a href="#importwallet" data-toggle="tab">导入钱包</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="createwallet">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">密码: </span>
+                            </div>
+                            <input type="password" class="form-control" placeholder="请保存你的密码！" id="userpass">
+                        </div>
+                        <button type="button" class="btn btn-default btn-block btn-primary">创建钱包</button>
+                    </div>
+                    <div class="tab-pane" id="importwallet">
+                        <p>
+                            Howdy, I'm in Section 2.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

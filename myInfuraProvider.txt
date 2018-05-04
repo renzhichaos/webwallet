@@ -1,0 +1,7 @@
+NETWORK	DESCRIPTION	URL
+Mainnet	production network	https://mainnet.infura.io/C1MIQHLneozsKWIZNMdR
+Ropsten	test network	https://ropsten.infura.io/C1MIQHLneozsKWIZNMdR
+INFURAnet	test network	https://infuranet.infura.io/C1MIQHLneozsKWIZNMdR
+Kovan	test network	https://kovan.infura.io/C1MIQHLneozsKWIZNMdR
+Rinkeby	test network	https://rinkeby.infura.io/C1MIQHLneozsKWIZNMdR
+IPFS	gateway	https://ipfs.infura.io
