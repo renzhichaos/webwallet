@@ -12,6 +12,8 @@
     });
 
     var web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
+    console.log('Web3 Detected! ' + web3.currentProvider.constructor.name);
+
 
     $("#eye").click(function() {
       if($("#eye").children("i").hasClass("am-icon-eye")) {
@@ -23,10 +25,8 @@
       }
     });
 
-
     $('#password').bind('input propertychange', function () {
       var password = $("#password").val();
-      console.log(password);
       if (password.length < 9) {
           $('.am-alert').fadeIn();
       } else {
@@ -34,20 +34,15 @@
       }
     });
 
-
     $("#create").click(function () {
         var password = $("#password").val();
-        console.log(password);
         if(password.length>=9){
-            var newwallet = web3.eth.accounts.wallet.create();
+            var newwallet = web3.eth.accounts.wallet;
             console.log(newwallet);
             // var encryptwallet = web3.eth.accounts.wallet.encrypt(password);
             // console.log(encryptwallet);
         }else{
-            $('#password').popover({
-                theme: 'danger',
-                content: '你的密码至少需要设置为9位!请确保密码足够强!'
-            }).popover('open');
+            $('.am-alert').fadeIn();
         }
     })
 
