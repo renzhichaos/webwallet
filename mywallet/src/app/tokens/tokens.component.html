@@ -1,5 +1,6 @@
 <ul class="tokens">
-  <li *ngFor="let token of tokens">
-    <h2><a target="_blank" rel="noopener" href="{{ token.url }}">{{token.name}} {{token.balance}} {{token.symbol}}</a></h2>
+  <li *ngFor="let token of tokens" [class.selected]="token === selectedToken" (click)="onSelect(token)">
+    <span class="badge">{{token.name}}</span> {{token.balance}} {{token.symbol}}
   </li>
 </ul>
+<app-token-detail [token]="selectedToken"></app-token-detail>

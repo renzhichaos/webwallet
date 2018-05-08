@@ -1,47 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="">
 <head>
-    <meta charset="UTF-8">
-    <title>OurWallet</title>
-    <script type="text/javascript" src="./js/polyfill.min.js"></script>
-    <script type="text/javascript" src="./js/ethjs-account.min.js"></script>
-    <script type="text/javascript" src="./js/ethjs.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <title>Hello Amaze UI</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <link rel="stylesheet" href="assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <h3 class="text-center">
-                Our Token
-            </h3>
-            <div class="tabbable" id="tabs-69572">
-                <ul class="nav nav-tabs">
-                    <li>
-                        <a href="#createwallet" data-toggle="tab">创建钱包</a>
-                    </li>
-                    <li class="active">
-                        <a href="#importwallet" data-toggle="tab">导入钱包</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="createwallet">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">密码: </span>
+<header class="am-topbar am-topbar-inverse ask-header">
+    <div class="am-container">
+        <h1 class="am-topbar-brand">
+            <a href="/" class="am-text-ir">Amaze UI</a>
+        </h1>
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active"><a href="#">关于我们</a></li>
+                <li><a href="http://amazeui.org" target="_blank">项目首页</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<section class="ask-banner">
+    <div class="am-container am-padding-vertical-lg">
+        <h1>世界，你好！</h1>
+        <p>欢迎使用 Amaze UI Stater Kit。</p>
+    </div>
+</section>
+
+<main>
+    <div class="am-container am-padding-vertical">
+        <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class="am-active"><a href="javascript: void(0)">创建钱包</a></li>
+                <li><a href="javascript: void(0)">导入钱包</a></li>
+                <li><a href="javascript: void(0)">。。。</a></li>
+            </ul>
+
+            <div class="am-tabs-bd">
+                <h1 class="am-text-center">创建钱包</h1>
+                <h2 class="am-text-center">输入一个强密码（至少9位）</h2>
+                <div class="am-tab-panel am-active">
+                    <div class="am-g">
+                        <div class="am-u-sm-10 am-u-sm-centered">
+                            <div class="am-input-group am-input-group-lg">
+                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+                                <input type="password" class="am-form-field" id="password" minlength="9" placeholder="设置密码,请不要忘记保存！">
+                                <span class="am-input-group-btn">
+                                    <button class="am-btn am-btn-default" type="button" id="eye"><i class="am-icon-eye am-icon-fw"></i></button>
+                                </span>
                             </div>
-                            <input type="password" class="form-control" placeholder="请保存你的密码！" id="userpass">
+                            <div class="am-alert am-alert-success" data-am-alert hidden>
+                                <button type="button" class="am-close">&times;</button>
+                                <p>你的密码至少需要设置为9位!请确保密码足够强!</p>
+                            </div>
+                            <p>
+                                <button type="button" class="am-btn am-btn-primary am-center am-btn-xl" id="create">创建钱包</button>
+                            </p>
                         </div>
-                        <button type="button" class="btn btn-default btn-block btn-primary">创建钱包</button>
                     </div>
-                    <div class="tab-pane" id="importwallet">
-                        <p>
-                            Howdy, I'm in Section 2.
-                        </p>
-                    </div>
+
+                </div>
+                <div class="am-tab-panel">
+                    ...
+                </div>
+                <div class="am-tab-panel">
+                    ...
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>
+<!--在这里编写你的代码-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+<script src="assets/js/web3.min.js"></script>
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
