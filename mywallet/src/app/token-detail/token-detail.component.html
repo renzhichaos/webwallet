@@ -1,0 +1,12 @@
+<div *ngIf="token">
+  <h2>{{token.name | uppercase}} Details</h2>
+  <div><span>id: </span>{{token.id}}</div>
+  <div>
+    <label>name:
+      <input [(ngModel)]="token.name" placeholder="name">
+    </label>
+  </div>
+  <div>
+    <a href="{{token.url}}" target="_blank">{{token.url}}</a>
+  </div>
+</div>
