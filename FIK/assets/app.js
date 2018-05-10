@@ -23,7 +23,7 @@ $(document).ready(function(){
     var token = url.split("?");
     var tokenAddress = token[token.length-1];
     console.log(tokenAddress);
-    var abi = [{"constant":true,"inputs":[],"name":"count","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"giveEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"currentDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_value","type":"bool"}],"name":"setMonthClose","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_exchangeStart","type":"uint256"},{"name":"_exchangeEnd","type":"uint256"},{"name":"_sellPrice","type":"uint256"},{"name":"_buyPrice","type":"uint256"}],"name":"setExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"monthPower","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeMyFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"sellPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"sellToContract","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_lock","type":"bool"}],"name":"setLock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"powers","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeUserFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_mintedAmount","type":"uint256"}],"name":"mintToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_balance","type":"uint256"}],"name":"takeEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_minimumEtherInFinney","type":"uint256"}],"name":"setMinEther","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"buyPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_open","type":"bool"}],"name":"setDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"}],"name":"getMonth","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"exchangeEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"buy","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"minToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_lockEnd","type":"uint256"}],"name":"lockAccount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozens","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"airDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"initialized","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_users","type":"uint256"},{"name":"_powers","type":"uint8"},{"name":"_minToken","type":"uint256"},{"name":"_count","type":"uint256"}],"name":"setMonthOpen","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"minEtherForAccounts","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_sellToContract","type":"bool"}],"name":"setSellToContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"exchangeStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"monthOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_amount","type":"uint256"}],"name":"sell","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenNum","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getEther","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"users","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dropStart","type":"uint256"},{"name":"_dropEnd","type":"uint256"},{"name":"_airDrop","type":"uint256"},{"name":"_totalDrop","type":"uint256"}],"name":"setAirDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"contractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"drop","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lock","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"centralMinter","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"}],"name":"FrozenFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"},{"indexed":false,"name":"fronzeEnd","type":"uint256"}],"name":"FrozenMyFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}];
+    var abi = [{"constant":true,"inputs":[],"name":"count","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"giveEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"currentDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_value","type":"bool"}],"name":"setMonthClose","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"},{"name":"_powers","type":"uint8"},{"name":"_minToken","type":"uint256"},{"name":"_count","type":"uint256"}],"name":"setMonthOpen","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"monthPower","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeMyFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_lock","type":"bool"}],"name":"setLock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_buyPrice","type":"uint256"}],"name":"setExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropEnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"powers","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_freeze","type":"uint256"},{"name":"_freezeEnd","type":"uint256"}],"name":"freezeUserFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"dropStart","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_balance","type":"uint256"}],"name":"takeEther","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"buyPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_open","type":"bool"}],"name":"setDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_month","type":"uint256"}],"name":"getMonth","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"minToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_address","type":"address"},{"name":"_lockEnd","type":"uint256"}],"name":"lockAccount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozens","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"airDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"initialized","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"monthOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"frozenNum","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalDrop","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"users","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"existing","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_dropStart","type":"uint256"},{"name":"_dropEnd","type":"uint256"},{"name":"_airDrop","type":"uint256"},{"name":"_totalDrop","type":"uint256"}],"name":"setAirDrop","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"contractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"drop","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lock","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"centralMinter","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"}],"name":"FrozenFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"target","type":"address"},{"indexed":false,"name":"frozen","type":"uint256"},{"indexed":false,"name":"fronzeEnd","type":"uint256"}],"name":"FrozenMyFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}];
 
     var links = {
         'Mainnet': 'https://www.etherscan.io/',
@@ -150,33 +150,9 @@ $(document).ready(function(){
         }
     });});
 
-    var exchangeStart = new Promise(function (resolve, reject){mytoken.exchangeStart.call(function(err, result){
-        if(!err){
-            exchangeStart = result;
-            resolve(exchangeStart);
-        }else{
-            console.error(err);
-        }
-    });});//兑换ether开始时间(秒)
-    var exchangeEnd = new Promise(function (resolve, reject){mytoken.exchangeEnd.call(function(err, result){
-        if(!err){
-            exchangeEnd = result;
-            resolve(exchangeEnd);
-        }else{
-            console.error(err);
-        }
-    });});//兑换ether结束时间(秒)
-    var sellPrice = new Promise(function (resolve, reject){mytoken.sellPrice.call(function(err, result){
-        if(!err){
-            sellPrice = Number(result)/Math.pow(10,18);
-            resolve(sellPrice);
-        }else{
-            console.error(err);
-        }
-    });});//卖出给合约的价格
     var buyPrice = new Promise(function (resolve, reject){mytoken.buyPrice.call(function(err, result){
         if(!err){
-            buyPrice = Number(result)/Math.pow(10,18);
+            buyPrice = Number(result) * Math.pow(10,decimals)/Math.pow(10,18);
             resolve(buyPrice);
         }else{
             console.error(err);
@@ -232,14 +208,6 @@ $(document).ready(function(){
         }
     });});//空投结束时间(秒)
 
-    var minEtherForAccounts = new Promise(function (resolve, reject){mytoken.minEtherForAccounts.call(function(err, result){
-        if(!err){
-            minEtherForAccounts = Number(result)/Math.pow(10,18);
-            resolve(minEtherForAccounts);
-        }else{
-            console.error(err);
-        }
-    });});//交易时最少持有以太币量
     var powers = new Promise(function (resolve, reject){mytoken.powers.call(function(err, result){
         if(!err){
             powers = result;
@@ -281,14 +249,6 @@ $(document).ready(function(){
             console.error(err);
         }
     });});//锁定(true)/解锁(false)交易
-    var sellToContract = new Promise(function (resolve, reject){mytoken.sellToContract.call(function(err, result){
-        if(!err){
-            sellToContract = result;
-            resolve(sellToContract);
-        }else{
-            console.error(err);
-        }
-    });});//允许卖代币给这个合约以换取ether
 
     web3.eth.defaultAccount = web3.eth.coinbase;
     var myaddress = web3.eth.defaultAccount;
@@ -400,32 +360,8 @@ $(document).ready(function(){
         return myeth;
     });
 
-    var datetime = new Promise(function (resolve, reject){
-        mytoken.getTime.call(function(err, result){
-            if(!err){
-                datetime = result;
-                console.log("datetime:"+datetime);
-                resolve(datetime);
-            }else{
-                console.error(err);
-            }
-        });});
 
-    function getAllowance(_fromaddress, _toaddress) {
-        var getallowance = new Promise(function (resolve, reject) {
-            mytoken.allowance.call(_fromaddress, _toaddress, function (err, result) {
-                if (!err) {
-                    getallowance = result;
-                    resolve(getallowance);
-                } else {
-                    console.error(err);
-                }
-            });
-        });
-        return getallowance;
-    }
-
-    Promise.all([node, ethereum, gasPrice, tokenETH, name, symbol, decimals, totalSupply, exchangeStart, exchangeEnd, sellPrice, buyPrice, drop, airDrop, currentDrop, totalDrop, dropStart, dropEnd, minEtherForAccounts, powers, users, minToken, count, lock, sellToContract, initialized, balances, frozens, frozenEnd, frozenNum, owner, myeth]).then(function(values){
+    Promise.all([node, ethereum, gasPrice, tokenETH, name, symbol, decimals, totalSupply, buyPrice, drop, airDrop, currentDrop, totalDrop, dropStart, dropEnd, powers, users, minToken, count, lock, initialized, balances, frozens, frozenEnd, frozenNum, owner, myeth]).then(function(values){
         console.log(JSON.stringify(values));
 
         $(".node").text(node);
@@ -435,21 +371,8 @@ $(document).ready(function(){
         $(".name").html("<a target='_blank' href='"+links[network]+"address/"+tokenAddress+"'>"+name+"("+symbol+")</a>");
         $(".symbol").text(symbol);
         $(".totalSupply").text(totalSupply);
-        if(exchangeStart > 0){
-            $(".exchangeStart").text(new Date(exchangeStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-            $("#exchangeStart").val(new Date(exchangeStart * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        }else{
-            $(".exchangeStart").text("无限制");
-        }
-        if(exchangeEnd > 0){
-            $(".exchangeEnd").text(new Date(exchangeEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-            $("#exchangeEnd").val(new Date(exchangeEnd * 1000).Format("yyyy-MM-dd hh:mm:ss"));
-        }else{
-            $(".exchangeEnd").text("无限制");
-        }
-        $(".sellPrice").text(sellPrice);
-        $("#sellPrice").val(sellPrice);
-        $(".buyPrice").text(buyPrice);
+
+         $(".buyPrice").text(buyPrice);
         $("#buyPrice").val(buyPrice);
         if(drop){
             $(".drop").attr("class", "drop badge badge-success").text("开启");
@@ -475,7 +398,6 @@ $(document).ready(function(){
         }else{
             $(".dropEnd").text("无限制")
         }
-        $(".minEtherForAccounts").text(minEtherForAccounts);
         $(".powers").text(powers);
         $("#powers").val(powers);
         $(".users").text(users);
@@ -507,14 +429,7 @@ $(document).ready(function(){
             $(".lock").attr("class", "lock badge badge-success").text("开启");
             $("#setlock").attr("class", "btn btn-success closeLock").text("关闭交易功能");
         }
-        if(sellToContract){
-            $(".sellToContract").attr("class", "sellToContract badge badge-success").text("开启");
-            $("#setsellToContract").attr("class", "btn btn-success closesellToContract").text("关闭兑换ETH");
-        }else{
-            $(".sellToContract").attr("class", "sellToContract badge badge-danger").text("关闭");
-            $("#setsellToContract").attr("class", "btn btn-outline-danger opensellToContract").text("开启兑换ETH");
-            $(".withsell").attr("disabled","disabled");
-        }
+
 
         $(".eth").text(myeth+" ETH");
 
@@ -526,7 +441,7 @@ $(document).ready(function(){
             var _accountether = getEth(account).then(function(data){
                 _accountether = Number(data)/Math.pow(10,18);
                 var _balanceOf = getBalances(account).then(function(data2){
-                    _balanceOf = (Number(data2)/Math.pow(10,decimals)).toFixed(2);
+                    _balanceOf = (Number(data2)/Math.pow(10,decimals)).toFixed(decimals);
                     $("#accountId").append('<option id="'+account+'" value="'+account+'">'+account+'('+_accountether+' ETH)('+_balanceOf+' '+symbol+')</option>');
                 });
             });
@@ -670,11 +585,6 @@ $(document).ready(function(){
                 }else{
                     $(".withlock").removeAttr("disabled");
                 }
-                if(sellToContract){
-                    $(".withsell").removeAttr("disabled");
-                }else{
-                    $(".withsell").attr("disabled","disabled");
-                }
             });
         });
 
@@ -745,7 +655,7 @@ $(document).ready(function(){
             $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 给合约地址发ETH中...").attr("disabled","disabled");
             var ethamount = $("#ethamount").val();
             var amount = Number($("#ethamount").val()) * Math.pow(10,18);
-            if (ethamount>0 && amount <= (myeth * Math.pow(10, 18))){
+            if (ethamount>=0 && amount <= (myeth * Math.pow(10, 18))){
                 var _estimateGas = new Promise(function (resolve, reject){
                     mytoken.giveEther.estimateGas({value: amount}, function(err, result){
                         if(!err) {
@@ -919,167 +829,6 @@ $(document).ready(function(){
             $(this).removeAttr("disabled").text("发送");
         });
 
-        $("#transferFrom").click(function(){
-            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 发送授权的"+symbol+"中...").attr("disabled","disabled");
-            var fromAddress = $("#fromAddress").val();
-            var fromtoAddress = $("#fromtoAddress").val();
-            var isAddress = (web3.isAddress(fromAddress) && web3.isAddress(fromtoAddress));
-            var fromtoAmount = $("#fromtoAmount").val();
-            var amount = Number($("#fromtoAmount").val()) * Math.pow(10, decimals);
-
-            var _balances = getBalances(fromAddress).then(function(data){
-                _balances = data;
-                return _balances;
-            });
-
-            var nowsecond = Math.round(new Date().getTime()/1000);
-
-            var fromfrozenEnd = getFrozenEnd(fromAddress).then(function(data){
-                fromfrozenEnd = data;
-                return fromfrozenEnd;
-            });
-
-            var fromfrozenNum = getFrozenNum(fromAddress).then(function(data){
-                fromfrozenNum = data;
-                return fromfrozenNum;
-            });
-
-            var allowance = getAllowance(fromAddress, myaddress).then(function(data){
-                allowance = data;
-                return allowance;
-            });
-
-            Promise.all([_balances, fromfrozenEnd, fromfrozenNum, allowance]).then(function(values){
-                if (nowsecond <= fromfrozenEnd) {
-                    _balances = _balances - fromfrozenNum;
-                }
-
-                if (nowsecond > frozens && isAddress && myaddress != fromtoAddress && (myaddress == owner || !lock) && fromtoAmount > 0 && amount <= _balances && amount <= allowance) {
-                    var _estimateGas = new Promise(function (resolve, reject){
-                        mytoken.transferFrom.estimateGas(fromAddress, fromtoAddress, amount, function(err, result){
-                            if(!err) {
-                                _estimateGas = result;
-                                resolve(_estimateGas);
-                                console.log("estimateGas:" + _estimateGas);
-                            }else{
-                                console.error(err);
-                            }
-                        });
-                    });
-                    Promise.all([_estimateGas]).then(function(value) {
-                        if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                            mytoken.transferFrom.sendTransaction(fromAddress, fromtoAddress, amount, {
-                                gasPrice: web3.toWei(gasPrice),
-                                gas: _estimateGas
-                            }, function (error, result) {
-                                if (!error) {
-                                    $("#transferFromresult").html(function (i, oldresult) {
-                                        return "成功发送" + fromAddress + "授权的" + fromtoAmount + " " + symbol + "给" + fromtoAddress + "<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                                    });
-                                } else
-                                    $("#transferFromresult").html(function (i, oldresult) {
-                                        return "未能发送授权的" + symbol + "<br>" + error + "<br>" + oldresult;
-                                    });
-                            });
-                        } else if (_estimateGas > myeth * Math.pow(10, 18)) {
-                            $("#transferFromresult").html(function (i, oldresult) {
-                                return "ETH不足!<br>" + oldresult;
-                            });
-                        }
-                    });
-                } else if (!isAddress || myaddress == toAddress) {
-                    $("#transferFromresult").html(function (i, oldresult) {
-                        return "发送地址不正确!<br>" + oldresult;
-                    });
-                } else if (toAmount <= 0 || amount > _balances) {
-                    $("#transferFromresult").html(function (i, oldresult) {
-                        return "发送数量不正确!(锁仓:" + fromfrozenNum / Math.pow(10, decimals) + " " + symbol + ")<br>" + oldresult;
-                    });
-                } else if (myaddress != owner && lock) {
-                    $("#transferFromresult").html(function (i, oldresult) {
-                        return "交易功能未开启!<br>" + oldresult;
-                    });
-                }else if(nowsecond < frozens){
-                    $("#result").html(function(i, oldresult){
-                        return "账号已被锁定!<br>"+ oldresult;
-                    });
-                }else {
-                    $("#result").html(function (i, oldresult) {
-                        return "其他错误!<br>" + oldresult;
-                    });
-                }
-            });
-            $(this).removeAttr("disabled").text("发送授权的"+symbol);
-        });
-
-        $("#approve").click(function(){
-            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 授权"+symbol+"中...").attr("disabled","disabled");
-            var toAddress = $("#toAddress").val();
-            var isAddress = web3.isAddress(toAddress);
-            var toAmount = $("#toAmount").val();
-            var amount = Number($("#toAmount").val()) * Math.pow(10,decimals);
-            var nowsecond = Math.round(new Date().getTime()/1000);
-            var _balances = balances * Math.pow(10, decimals);
-            if (nowsecond <= frozenEnd) {
-                _balances = _balances - (frozenNum * Math.pow(10, decimals));
-            }
-            if (nowsecond > frozens && isAddress && !lock && myaddress!=toAddress && toAmount> 0 && amount<=_balances){
-                var _estimateGas = new Promise(function (resolve, reject){
-                    mytoken.approve.estimateGas(toAddress, amount, function(err, result){
-                        if(!err) {
-                            _estimateGas = result;
-                            resolve(_estimateGas);
-                            console.log("estimateGas:" + _estimateGas);
-                        }else{
-                            console.error(err);
-                        }
-                    });
-                });
-                Promise.all([_estimateGas]).then(function(value) {
-                    if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                        mytoken.approve.sendTransaction(toAddress, amount, {
-                            gasPrice: web3.toWei(gasPrice),
-                            gas: _estimateGas
-                        }, function (error, result) {
-                            if (!error) {
-                                $("#result").html(function (i, oldresult) {
-                                    return "成功授权" + toAmount + " " + symbol + "给" + toAddress + "<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                                });
-                            } else
-                                $("#result").html(function (i, oldresult) {
-                                    return "未能授权" + symbol + "<br>" + error + "<br>" + oldresult;
-                                });
-                        });
-                    } else if (_estimateGas > myeth * Math.pow(10, 18)) {
-                        $("#result").html(function (i, oldresult) {
-                            return "ETH不足!<br>" + oldresult;
-                        });
-                    }
-                });
-            }else if(!isAddress || myaddress==toAddress){
-                $("#result").html(function(i, oldresult){
-                    return "授权地址不正确!<br>"+ oldresult;
-                });
-            }else if(toAmount<=0 || amount>_balances){
-                $("#result").html(function(i, oldresult){
-                    return "授权数量不正确!(锁仓:"+frozenNum+" "+symbol+")<br>"+ oldresult;
-                });
-            }else if(lock){
-                $("#result").html(function(i, oldresult){
-                    return "交易功能未开启!<br>"+ oldresult;
-                });
-            }else if(nowsecond < frozens){
-                $("#result").html(function(i, oldresult){
-                    return "账号已被锁定!<br>"+ oldresult;
-                });
-            }else {
-                $("#result").html(function (i, oldresult) {
-                    return "其他错误!<br>" + oldresult;
-                });
-            }
-            $(this).removeAttr("disabled").text("授权");
-        });
-
         $("#burn").click(function(){
             $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 销毁"+symbol+"中...").attr("disabled","disabled");
             var useramount = $("#useramount").val();
@@ -1142,97 +891,8 @@ $(document).ready(function(){
             $(this).removeAttr("disabled").text("销毁" + symbol);
         });
 
-        $("#burnFrom").click(function() {
-            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 销毁授权的" + symbol + "中...").attr("disabled", "disabled");
-            var toAddress = $("#toAddress").val();
-            var isAddress = web3.isAddress(toAddress);
-            var toAmount = $("#toAmount").val();
-            var amount = Number($("#toAmount").val()) * Math.pow(10, decimals);
-
-            var _balances = getBalances(toAddress).then(function (data) {
-                _balances = data;
-                return _balances;
-            });
-            var _frozens = getFrozens(toAddress).then(function(data){
-                _frozens = data;
-                return _frozens;
-            });
-            var _frozenEnd = getFrozenEnd(toAddress).then(function (data) {
-                _frozenEnd = data;
-                return _frozenEnd;
-            });
-            var _frozenNum = getFrozenNum(toAddress).then(function (data) {
-                _frozenNum = data;
-                return _frozenNum;
-            });
-            var allowance = getAllowance(toAddress, myaddress).then(function(data){
-                allowance = data;
-                return allowance;
-            });
-            Promise.all([_balances, _frozens, _frozenEnd, _frozenNum, allowance]).then(function(values){
-                if (nowsecond <= _frozenEnd) {
-                    _balances = _balances - _frozenNum;
-                }
-                if (nowsecond > frozens && nowsecond > _frozens && isAddress && !lock && myaddress != toAddress && toAmount > 0 && amount <= _balances && amount <= allowance) {
-                    var _estimateGas = new Promise(function (resolve, reject){
-                        mytoken.burnFrom.estimateGas(toAddress, amount, function(err, result){
-                            if(!err) {
-                                _estimateGas = result;
-                                resolve(_estimateGas);
-                                console.log("estimateGas:" + _estimateGas);
-                            }else{
-                                console.error(err);
-                            }
-                        });
-                    });
-                    Promise.all([_estimateGas]).then(function(value) {
-                        if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                            mytoken.burnFrom.sendTransaction(toAddress, amount, {
-                                gasPrice: web3.toWei(gasPrice),
-                                gas: _estimateGas
-                            }, function (error, result) {
-                                if (!error) {
-                                    $("#result").html(function (i, oldresult) {
-                                        return "成功销毁" + toAddress + "授权的" + toAmount + " " + symbol + "<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                                    });
-                                } else
-                                    $("#result").html(function (i, oldresult) {
-                                        return "未能销毁授权的" + symbol + "<br>" + error + "<br>" + oldresult;
-                                    });
-                            });
-                        } else if (_estimateGas > myeth * Math.pow(10, 18)) {
-                            $("#result").html(function (i, oldresult) {
-                                return "ETH不足!<br>" + oldresult;
-                            });
-                        }
-                    });
-                } else if (!isAddress || myaddress == toAddress) {
-                    $("#result").html(function (i, oldresult) {
-                        return "销毁授权的地址不正确!<br>" + oldresult;
-                    });
-                } else if (toAmount <= 0 || amount > _balances || amount > allowance) {
-                    $("#result").html(function (i, oldresult) {
-                        return "销毁授权的数量不正确!(授权: " + allowance/Math.pow(10, decimals) + " " + symbol + ")<br>" + oldresult;
-                    });
-                } else if (lock) {
-                    $("#result").html(function (i, oldresult) {
-                        return "交易功能未开启!<br>" + oldresult;
-                    });
-                } else if (nowsecond < frozens || nowsecond < _frozens) {
-                    $("#result").html(function (i, oldresult) {
-                        return "账号已被锁定!<br>" + oldresult;
-                    });
-                } else {
-                    $("#result").html(function (i, oldresult) {
-                        return "其他错误!<br>" + oldresult;
-                    });
-                }
-            });
-            $(this).removeAttr("disabled").text("销毁授权的" + symbol);
-        });
-
         $("#buy").click(function(){
-            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 购买"+symbol+"中...").attr("disabled","disabled");
+            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 购买"+symbol+"(购买 0 "+symbol+"是领取空投奖励)中...").attr("disabled","disabled");
             var useramount = $("#useramount").val();
             var amount = Number($("#useramount").val()) * Math.pow(10,decimals);
             var nowsecond = Math.round(new Date().getTime()/1000);
@@ -1241,10 +901,14 @@ $(document).ready(function(){
                     _balances = data;
                     return _balances;
                 });
-                Promise.all([_balances]).then(function(value) {
-                    if (_balances >= amount && !lock && ((nowsecond >= exchangeStart && nowsecond <= exchangeEnd) || (nowsecond >= exchangeStart && exchangeEnd == 0)) && useramount > 0) {
+                var _initialized = getInitialized(myaddress).then(function(data){
+                    _initialized = data;
+                    return _initialized;
+                });//查询空投
+                Promise.all([_balances, _initialized]).then(function(value) {
+                    if (_balances >= amount && !lock && useramount >= 0 && ((!_initialized && useramount == 0 && (totalDrop - currentDrop) >= airDrop)|| useramount != 0)) {
                         var _estimateGas = new Promise(function (resolve, reject){
-                            mytoken.buy.estimateGas({value: amount * buyPrice * Math.pow(10,18)}, function(err, result){
+                            web3.eth.estimateGas({to: tokenAddress, value: amount * buyPrice * Math.pow(10,18)/Math.pow(10,decimals)}, function(err, result){
                                 if(!err) {
                                     _estimateGas = result;
                                     resolve(_estimateGas);
@@ -1255,9 +919,10 @@ $(document).ready(function(){
                             });
                         });
                         Promise.all([_estimateGas]).then(function(value) {
-                            if (amount * buyPrice * Math.pow(10,18) + _estimateGas <= myeth * Math.pow(10, 18)) {
-                                mytoken.buy.sendTransaction({
-                                    value: amount * buyPrice * Math.pow(10,18),
+                            if (amount * buyPrice * Math.pow(10,18)/Math.pow(10,decimals) + _estimateGas <= myeth * Math.pow(10, 18)) {
+                                web3.eth.sendTransaction({
+                                    to: tokenAddress,
+                                    value: amount * buyPrice * Math.pow(10,18)/Math.pow(10,decimals),
                                     gasPrice: web3.toWei(gasPrice),
                                     gas: _estimateGas
                                 }, function (error, result) {
@@ -1270,13 +935,13 @@ $(document).ready(function(){
                                             return "未能购买" + symbol + "<br>" + error + "<br>" + oldresult;
                                         });
                                 });
-                            } else if (amount * buyPrice * Math.pow(10,18) + _estimateGas > myeth * Math.pow(10, 18)) {
+                            } else if (amount * buyPrice * Math.pow(10,18)/Math.pow(10,decimals) + _estimateGas > myeth * Math.pow(10, 18)) {
                                 $("#userresult").html(function (i, oldresult) {
                                     return "ETH不足!<br>" + oldresult;
                                 });
                             }
                         });
-                    } else if (useramount <= 0 || amount > _balances) {
+                    } else if (useramount < 0 || amount > _balances) {
                         $("#userresult").html(function (i, oldresult) {
                             return "数量不正确!<br>" + oldresult;
                         });
@@ -1284,9 +949,17 @@ $(document).ready(function(){
                         $("#userresult").html(function (i, oldresult) {
                             return "交易功能未开启!<br>" + oldresult;
                         });
+                    } else if (_initialized && useramount == 0) {
+                        $("#userresult").html(function (i, oldresult) {
+                            return "已经领取过空投奖励!<br>" + oldresult;
+                        });
+                    } else if (!_initialized && useramount == 0 && (totalDrop - currentDrop) < airDrop) {
+                        $("#userresult").html(function (i, oldresult) {
+                            return "来晚了,空投奖励已经发完了!<br>" + oldresult;
+                        });
                     } else {
                         $("#userresult").html(function (i, oldresult) {
-                            return "未到兑换时间!<br>" + oldresult;
+                            return "其他错误!<br>" + oldresult;
                         });
                     }
                 });
@@ -1295,79 +968,7 @@ $(document).ready(function(){
                     return "管理员不能购买!<br>" + oldresult;
                 });
             }
-            $(this).removeAttr("disabled").text("购买"+symbol);
-        });
-
-        $("#sell").click(function(){
-            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i>"+symbol+"兑换ETH中...").attr("disabled","disabled");
-            var useramount = $("#useramount").val();
-            var amount = Number($("#useramount").val()) * Math.pow(10,decimals);
-            var nowsecond = Math.round(new Date().getTime()/1000);
-            if (myaddress != owner) {
-                var _balances = balances * Math.pow(10, decimals);
-                if (nowsecond <= frozenEnd) {
-                    _balances = _balances - (frozenNum * Math.pow(10, decimals));
-                }
-                if (nowsecond > frozens && tokenETH * Math.pow(10,18) >= (amount * sellPrice * Math.pow(10,18)) && !lock && ((nowsecond >= exchangeStart && nowsecond <= exchangeEnd) || (nowsecond >= exchangeStart && exchangeEnd == 0)) && useramount > 0 && amount <= _balances) {
-                    var _estimateGas = new Promise(function (resolve, reject){
-                        mytoken.sell.estimateGas(amount, function(err, result){
-                            if(!err) {
-                                _estimateGas = result;
-                                resolve(_estimateGas);
-                                console.log("estimateGas:" + _estimateGas);
-                            }else{
-                                console.error(err);
-                            }
-                        });
-                    });
-                    Promise.all([_estimateGas]).then(function(value) {
-                        if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                            mytoken.sell.sendTransaction(amount, {
-                                gasPrice: web3.toWei(gasPrice),
-                                gas: _estimateGas
-                            }, function (error, result) {
-                                if (!error) {
-                                    $("#userresult").html(function (i, oldresult) {
-                                        return useramount + " " + symbol + "成功兑换ETH<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                                    });
-                                } else
-                                    $("#userresult").html(function (i, oldresult) {
-                                        return "未能兑换ETH<br>" + error + "<br>" + oldresult;
-                                    });
-                            });
-                        } else if (_estimateGas > myeth * Math.pow(10, 18)) {
-                            $("#userresult").html(function (i, oldresult) {
-                                return "ETH不足!<br>" + oldresult;
-                            });
-                        }
-                    });
-                } else if (useramount <= 0 || amount > _balances) {
-                    $("#userresult").html(function (i, oldresult) {
-                        return "数量不正确!(锁仓:" + frozenNum + " " + symbol + ")<br>" + oldresult;
-                    });
-                } else if (lock) {
-                    $("#userresult").html(function (i, oldresult) {
-                        return "交易功能未开启!<br>" + oldresult;
-                    });
-                } else if (tokenETH * Math.pow(10,18) < (amount * sellPrice * Math.pow(10,18))) {
-                    $("#userresult").html(function (i, oldresult) {
-                        return "合约地址ETH不足!<br>" + oldresult;
-                    });
-                }else if(nowsecond < frozens){
-                    $("#userresult").html(function(i, oldresult){
-                        return "账号已被锁定!<br>"+ oldresult;
-                    });
-                } else {
-                    $("#userresult").html(function (i, oldresult) {
-                        return "未到兑换时间!<br>" + oldresult;
-                    });
-                }
-            }else{
-                $("#userresult").html(function (i, oldresult) {
-                    return "管理员不能兑换ETH!<br>" + oldresult;
-                });
-            }
-            $(this).removeAttr("disabled").text(symbol+"兑换ETH");
+            $(this).removeAttr("disabled").text("购买"+symbol+"(购买 0 "+symbol+"是领取空投奖励)");
         });
 
 
@@ -1535,87 +1136,6 @@ $(document).ready(function(){
             }
         });
 
-        $("#setsellToContract").click(function () {
-            if(myaddress == owner) {
-                if ($("#setsellToContract").hasClass("closesellToContract")) {
-                    var _estimateGas = new Promise(function (resolve, reject){
-                        mytoken.setSellToContract.estimateGas("", function(err, result){
-                            if(!err) {
-                                _estimateGas = result;
-                                resolve(_estimateGas);
-                                console.log("estimateGas:" + _estimateGas);
-                            }else{
-                                console.error(err);
-                            }
-                        });
-                    });
-                    Promise.all([_estimateGas]).then(function(value) {
-                        if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                            mytoken.setSellToContract.sendTransaction("", {
-                                gasPrice: web3.toWei(gasPrice),
-                                gas: _estimateGas
-                            }, function (error, result) {
-                                if (!error) {
-                                    $(".sellToContract").attr("class", "sellToContract badge badge-danger").text("关闭");
-                                    $("#setsellToContract").attr("class", "btn btn-outline-danger opensellToContract").text("开启兑换ETH");
-                                    $("#setresult").html(function (i, oldresult) {
-                                        return "成功关闭兑换ETH<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                                    });
-                                }
-                                else
-                                    $("#setresult").html(function (i, oldresult) {
-                                        return "未能关闭兑换ETH<br>" + error + "<br>" + oldresult;
-                                    });
-                            });
-                        } else {
-                            $("#setresult").html(function (i, oldresult) {
-                                return "ETH不足!<br>" + oldresult;
-                            });
-                        }
-                    });
-                } else if ($("#setsellToContract").hasClass("opensellToContract")) {
-                    var _estimateGas = new Promise(function (resolve, reject){
-                        mytoken.setSellToContract.estimateGas(true, function(err, result){
-                            if(!err) {
-                                _estimateGas = result;
-                                resolve(_estimateGas);
-                                console.log("estimateGas:" + _estimateGas);
-                            }else{
-                                console.error(err);
-                            }
-                        });
-                    });
-                    Promise.all([_estimateGas]).then(function(value) {
-                        if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                            mytoken.setSellToContract.sendTransaction(true, {
-                                gasPrice: web3.toWei(gasPrice),
-                                gas: _estimateGas
-                            }, function (error, result) {
-                                if (!error) {
-                                    $(".sellToContract").attr("class", "sellToContract badge badge-success").text("开启");
-                                    $("#setsellToContract").attr("class", "btn btn-success closesellToContract").text("关闭兑换ETH");
-                                    $("#setresult").html(function (i, oldresult) {
-                                        return "成功开启兑换ETH<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                                    });
-                                }
-                                else
-                                    $("#setresult").html(function (i, oldresult) {
-                                        return "未能开启兑换ETH<br>" + error + "<br>" + oldresult;
-                                    });
-                            });
-                        } else {
-                            $("#setresult").html(function (i, oldresult) {
-                                return "ETH不足!<br>" + oldresult;
-                            });
-                        }
-                    });
-                }
-            }else {
-                $("#setresult").html(function (i, oldresult) {
-                    return "没有权限管理!<br>" + oldresult;
-                });
-            }
-        });
 
         $("#mintToken").click(function () {
             if(myaddress == owner) {
@@ -1723,7 +1243,7 @@ $(document).ready(function(){
             var isAddress = web3.isAddress(searchAddress);
             if (isAddress) {
                 var _balances = getBalances(searchAddress).then(function(data){
-                    _balances = (data/Math.pow(10,decimals)).toFixed(2);
+                    _balances = (data/Math.pow(10,decimals)).toFixed(decimals);
                     return _balances;
                 });//查询SCD
                 Promise.all([_balances]).then(function(value) {
@@ -1837,16 +1357,14 @@ $(document).ready(function(){
             }
         });
 
+
         $("#setExchange").click(function () {
             if (myaddress == owner) {
-                $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 设置" + symbol + "兑换ETH参数中...").attr("disabled", "disabled");
-                var _exchangeStart = new Date($("#exchangeStart").val()).getTime() / 1000;
-                var _exchangeEnd = new Date($("#exchangeEnd").val()).getTime() / 1000;
-                var _sellPrice = Number($("#sellPrice").val());
+                $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 设置" + symbol + "购买(直投)价格中...").attr("disabled", "disabled");
                 var _buyPrice = Number($("#buyPrice").val());
-                if (_sellPrice > 0 && _buyPrice > 0) {
+                if (_buyPrice > 0) {
                     var _estimateGas = new Promise(function (resolve, reject){
-                        mytoken.setExchange.estimateGas(_exchangeStart, _exchangeEnd, _sellPrice * Math.pow(10, 16), _buyPrice * Math.pow(10, 16), function(err, result){
+                        mytoken.setExchange.estimateGas(_buyPrice * Math.pow(10, 18)/Math.pow(10, decimals), function(err, result){
                             if(!err) {
                                 _estimateGas = result;
                                 resolve(_estimateGas);
@@ -1858,17 +1376,17 @@ $(document).ready(function(){
                     });
                     Promise.all([_estimateGas]).then(function(value) {
                         if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                            mytoken.setExchange.sendTransaction(_exchangeStart, _exchangeEnd, _sellPrice * Math.pow(10, 16), _buyPrice * Math.pow(10, 16), {
+                            mytoken.setExchange.sendTransaction(_buyPrice * Math.pow(10, 18)/Math.pow(10, decimals), {
                                 gasPrice: web3.toWei(gasPrice),
                                 gas: _estimateGas
                             }, function (error, result) {
                                 if (!error) {
                                     $("#setExchangeresult").html(function (i, oldresult) {
-                                        return "成功设置" + symbol + "兑换ETH参数.<br>" + JSON.stringify(result) + "<br>" + oldresult;
+                                        return "成功设置" + symbol + "购买(直投)价格.<br>" + JSON.stringify(result) + "<br>" + oldresult;
                                     });
                                 } else
                                     $("#setExchangeresult").html(function (i, oldresult) {
-                                        return "未能设置" + symbol + "兑换ETH参数.<br>" + error + "<br>" + oldresult;
+                                        return "未能设置" + symbol + "购买(直投)价格.<br>" + error + "<br>" + oldresult;
                                     });
                             });
                         } else if (_estimateGas > myeth * Math.pow(10, 18)) {
@@ -1879,10 +1397,10 @@ $(document).ready(function(){
                     });
                 } else {
                     $("#setExchangeresult").html(function (i, oldresult) {
-                        return "兑换ETH参数不正确!<br>" + oldresult;
+                        return "购买(直投)价格不正确!<br>" + oldresult;
                     });
                 }
-                $(this).removeAttr("disabled").text("设置" + symbol + "兑换ETH参数");
+                $(this).removeAttr("disabled").text("设置" + symbol + "购买(直投)价格");
                 $(this).blur();
             } else {
                 $("#setExchangeresult").html(function (i, oldresult) {
@@ -1890,6 +1408,7 @@ $(document).ready(function(){
                 });
             }
         });
+
 
         $(".datetime").datetimepicker({language: "zh-CN", autoclose: true ,startDate: "1970-01-01 08:00:00"});
 
@@ -2231,53 +1750,6 @@ $(document).ready(function(){
             }
         });
 
-        $("#setMinEther").click(function(){
-            $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 设置账号的最少持有ETH量中...").attr("disabled","disabled");
-            var _amount = $("#amount").val();
-            var amount = Number($("#amount").val()) * Math.pow(10, 18);
-            var _estimateGas = new Promise(function (resolve, reject){
-                mytoken.setMinEther.estimateGas(amount, function(err, result){
-                    if(!err) {
-                        _estimateGas = result;
-                        resolve(_estimateGas);
-                        console.log("estimateGas:" + _estimateGas);
-                    }else{
-                        console.error(err);
-                    }
-                });
-            });
-            Promise.all([_estimateGas]).then(function(value) {
-                if (_estimateGas <= myeth * Math.pow(10, 18)) {
-                    mytoken.setMinEther.sendTransaction(amount, {
-                        gasPrice: web3.toWei(gasPrice),
-                        gas: _estimateGas
-                    }, function (error, result) {
-                        if (!error) {
-                            $("#amountresult").html(function (i, oldresult) {
-                                return "成功设置账号的最少持有ETH量:" + _amount + "<br>" + JSON.stringify(result) + "<br>" + oldresult;
-                            });
-                            $(".minEtherForAccounts").text(_amount);
-                        } else
-                            $("#amountresult").html(function (i, oldresult) {
-                                return "未能设置账号的最少持有ETH量!<br>" + error + "<br>" + oldresult;
-                            });
-                    });
-                } else if (_amount <= 0) {
-                    $("#amountresult").html(function (i, oldresult) {
-                        return "ETH量不正确!<br>" + oldresult;
-                    });
-                } else if (_estimateGas > myeth * Math.pow(10, 18)) {
-                    $("#amountresult").html(function (i, oldresult) {
-                        return "ETH不足!<br>" + oldresult;
-                    });
-                } else {
-                    $("#amountresult").html(function (i, oldresult) {
-                        return "其他错误!<br>" + oldresult;
-                    });
-                }
-            });
-            $(this).removeAttr("disabled").text("设置账号的最少持有ETH量");
-        });
 
         $("#takeEther").click(function(){
             $(this).html("<i class='fa fa-spinner' aria-hidden='true'></i> 从合约中提取ETH中...").attr("disabled","disabled");
@@ -2431,27 +1903,6 @@ $(document).ready(function(){
             } else {
                 $("#freezeresult").html(function (i, oldresult) {
                     return "没有权限管理!<br>" + oldresult;
-                });
-            }
-        });
-
-        $("#allowance").click(function(){
-            var allowancefromAddress = $("#allowancefromAddress").val();
-            var allowancetoAddress = $("#allowancetoAddress").val();
-            var isAddress = web3.isAddress(allowancefromAddress)&&web3.isAddress(allowancetoAddress);
-            if(isAddress){
-                var toallowance = getAllowance(allowancefromAddress, allowancetoAddress).then(function(data){
-                    toallowance = data;
-                    return toallowance;
-                });
-                Promise.all([toallowance]).then(function(value) {
-                    $("#allowanceresult").html(function (i, oldresult) {
-                        return allowancefromAddress+" 授权给 "+allowancetoAddress + ": " + toallowance/Math.pow(10, decimals) + " "+symbol+".<br>" + oldresult;
-                    });
-                });
-            }else{
-                $("#allowanceresult").html(function(i, oldresult){
-                    return "地址不正确!<br>"+ oldresult;
                 });
             }
         });

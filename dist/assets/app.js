@@ -533,7 +533,7 @@ $(document).ready(function(){
         }
 
         $("#" + myaddress).attr("selected", "selected");
-        $(".monthtoken").text(totalSupply * Math.pow(10,decimals) * powers / 100 / users);
+        $(".monthtoken").text((totalSupply * powers / 100 / users).toFixed(decimals));
 
         var accountInterval = setInterval(function() {
             if (web3.eth.accounts[0] !== accounts[0]) {
