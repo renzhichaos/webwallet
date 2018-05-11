@@ -23,6 +23,10 @@ $(function() {
     console.log(web3);
     var myWallet = web3.eth.accounts.wallet;
 
+    /*var bip39 = require('bip39');
+    var hdkey = require('ethereumjs-wallet/hdkey');
+    var util = require('ethereumjs-util');*/
+
     $("#eye").click(function() {
         if($("#eye").children("i").hasClass("am-icon-eye")) {
             $("#password").attr("type", "text");
@@ -42,15 +46,52 @@ $(function() {
         }
     });
 
+
+    var global_keystore;
     $("#create").click(function () {
         var password = $("#password").val();
+
         if(password.length>=9){
-            myWallet.create(1);
-            console.log(myWallet);
-            var myWalleten = myWallet.encrypt(password);
-            console.log(myWalleten);
-            var save = myWallet.save(password);
-            console.log(save);
+            var secretSeed = lightwallet.keystore.generateRandomSeed();
+            console.log(secretSeed);
+            lightwallet.keystore.createVault(
+                {
+                    password: "111111111",
+                    seedPhrase: "proud route remain collect kit edge water laptop gadget social venture venue",
+                    hdPathString: "m/44'/60'/0'/0/0"
+                }, function (err, ks) {
+                    global_keystore = ks;
+                    console.log(ks);
+                    ks.keyFromPassword(password, function (err2, pwDerivedKey) {
+                        console.log(pwDerivedKey);
+                        ks.generateNewAddress(pwDerivedKey);
+                        console.log(ks.getAddresses());
+                        console.log(ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
+                        global_keystore = ks.serialize();
+                        console.log(global_keystore);
+                    });
+                }
+
+            );
+
+            /*var mnemonic = bip39.generateMnemonic();
+            console.log(mnemonic);
+            var seed = bip39.mnemonicToSeed(mnemonic);
+            console.log(seed);
+            var hdWallet = hdkey.fromMasterSeed(seed);
+            console.log(hdWallet);
+            var key1 = hdWallet.derivePath("m/44'/60'/0'/0/0");
+            var address1 = util.pubToAddress(key1._hdkey._publicKey, true);
+            console.log(address1);
+            address1 = util.toChecksumAddress(address1.toString('hex'));
+            console.log(address1);*/
+
+            // myWallet.create(1);
+            // console.log(myWallet);
+            // var myWalleten = myWallet.encrypt(password);
+            // console.log(myWalleten);
+            // var save = myWallet.save(password);
+            // console.log(save);
             // var encryptwallet = web3.eth.accounts.wallet.encrypt(password);
             // console.log(encryptwallet);
         }else{
@@ -61,8 +102,15 @@ $(function() {
     $("#open").click(function () {
         var password = $("#password").val();
         if(password.length>=9){
-            myWallet.load(password);
-            console.log(myWallet);
+            var kss = lightwallet.keystore.deserialize(global_keystore);
+            kss.keyFromPassword(password, function (err, pwDerivedKey) {
+                console.log(pwDerivedKey);
+                console.log(kss.getAddresses());
+                console.log(kss.exportPrivateKey(kss.getAddresses()[0], pwDerivedKey));
+                console.log(kss.getSeed(pwDerivedKey));
+            })
+            /*myWallet.load(password);
+            console.log(myWallet);*/
         }else{
             $('.am-alert').fadeIn();
         }
