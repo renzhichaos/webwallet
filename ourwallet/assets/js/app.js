@@ -56,8 +56,8 @@ $(function() {
             console.log(secretSeed);
             lightwallet.keystore.createVault(
                 {
-                    password: "111111111",
-                    seedPhrase: "proud route remain collect kit edge water laptop gadget social venture venue",
+                    password: password,
+                    seedPhrase: secretSeed,
                     hdPathString: "m/44'/60'/0'/0/0"
                 }, function (err, ks) {
                     global_keystore = ks;
