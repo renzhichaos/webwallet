@@ -23,6 +23,33 @@ $(function() {
     console.log(web3);
     var myWallet = web3.eth.accounts.wallet;
 
+    if (typeof(Storage) == "undefined") {
+        // 抱歉！不支持 Web Storage ..
+        $("#my-storage").fadeIn();
+    }
+
+    function syntaxHighlight(json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
     /*var bip39 = require('bip39');
     var hdkey = require('ethereumjs-wallet/hdkey');
     var util = require('ethereumjs-util');*/
@@ -40,9 +67,9 @@ $(function() {
     $('#password').bind('input propertychange', function () {
         var password = $("#password").val();
         if (password.length < 9) {
-            $('.am-alert').fadeIn();
+            $('#my-valid').fadeIn();
         } else {
-            $('.am-alert').fadeOut();
+            $('#my-valid').fadeOut();
         }
     });
 
@@ -52,8 +79,33 @@ $(function() {
         var password = $("#password").val();
 
         if(password.length>=9){
-            var secretSeed = lightwallet.keystore.generateRandomSeed();
-            console.log(secretSeed);
+
+            var wallet = ethers.Wallet.createRandom();
+
+            // noinspection JSAnnotator
+            function callback(percent) {
+                console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
+            }
+
+            var encryptPromise = wallet.encrypt(password, callback);
+
+            encryptPromise.then(function(json) {
+                console.log(json);
+                if (typeof(Storage) !== "undefined") {
+                    // 针对 localStorage/sessionStorage 的代码
+                    localStorage.setItem("ethersjs_wallet", json);
+                } else {
+                    // 抱歉！不支持 Web Storage ..
+                    $("#my-storage").fadeIn();
+                }
+                $('#my-save').html(syntaxHighlight(wallet));
+                $('#my-conment').fadeIn();
+
+            });
+
+
+            /*var secretSeed = lightwallet.keystore.generateRandomSeed();
+            console.log("secretSeed:"+secretSeed);
             lightwallet.keystore.createVault(
                 {
                     password: password,
@@ -61,18 +113,22 @@ $(function() {
                     hdPathString: "m/44'/60'/0'/0/0"
                 }, function (err, ks) {
                     global_keystore = ks;
+                    console.log("keystore:");
                     console.log(ks);
                     ks.keyFromPassword(password, function (err2, pwDerivedKey) {
-                        console.log(pwDerivedKey);
+                        console.log("pwkey:"+pwDerivedKey);
                         ks.generateNewAddress(pwDerivedKey);
+                        console.log(ks);
+                        console.log("addresses:");
                         console.log(ks.getAddresses());
+                        console.log("privatekey:");
                         console.log(ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
                         global_keystore = ks.serialize();
-                        console.log(global_keystore);
+                        console.log("keystore2:"+global_keystore);
                     });
                 }
 
-            );
+            );*/
 
             /*var mnemonic = bip39.generateMnemonic();
             console.log(mnemonic);
@@ -95,24 +151,42 @@ $(function() {
             // var encryptwallet = web3.eth.accounts.wallet.encrypt(password);
             // console.log(encryptwallet);
         }else{
-            $('.am-alert').fadeIn();
+            $('#my-valid').fadeIn();
         }
     });
 
-    $("#open").click(function () {
+    $("#export").click(function () {
         var password = $("#password").val();
         if(password.length>=9){
-            var kss = lightwallet.keystore.deserialize(global_keystore);
+            if (typeof(Storage) !== "undefined") {
+                // 针对 localStorage/sessionStorage 的代码
+                var json = localStorage.getItem("ethersjs_wallet");
+                ethers.Wallet.fromEncryptedWallet(json, password).then(function(wallet) {
+                    console.log("Address: " + wallet.address);
+                    $('#my-save').html(syntaxHighlight(wallet));
+                    $('#my-conment').fadeIn();
+                });
+            } else {
+                // 抱歉！不支持 Web Storage ..
+                $("#my-storage").fadeIn();
+            }
+
+            // var wallet = ethers.Wallet.fromMnemonic(password);
+
+            /*var kss = lightwallet.keystore.deserialize(global_keystore);
             kss.keyFromPassword(password, function (err, pwDerivedKey) {
-                console.log(pwDerivedKey);
-                console.log(kss.getAddresses());
-                console.log(kss.exportPrivateKey(kss.getAddresses()[0], pwDerivedKey));
-                console.log(kss.getSeed(pwDerivedKey));
-            })
+                console.log("pwkey:"+pwDerivedKey);
+                console.log("addresses:"+kss.getAddresses());
+                var privatekey = kss.exportPrivateKey(kss.getAddresses()[0], pwDerivedKey);
+                var aa = web3.eth.accounts.privateKeyToAccount(privatekey);
+                console.log(aa);
+                console.log("seed:"+kss.getSeed(pwDerivedKey));
+            })*/
             /*myWallet.load(password);
             console.log(myWallet);*/
+
         }else{
-            $('.am-alert').fadeIn();
+            $('#my-valid').fadeIn();
         }
     });
 
