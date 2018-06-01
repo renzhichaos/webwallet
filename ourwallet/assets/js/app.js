@@ -54,22 +54,22 @@ $(function() {
     var hdkey = require('ethereumjs-wallet/hdkey');
     var util = require('ethereumjs-util');*/
 
-    $("#eye").click(function() {
-        if($("#eye").children("i").hasClass("am-icon-eye")) {
-            $("#password").attr("type", "text");
-            $("#eye").children("i").removeClass("am-icon-eye").addClass("am-icon-eye-slash");
+    $(".my-eye").click(function() {
+        if($(this).children("i").hasClass("am-icon-eye")) {
+            $(this).parent().prev().attr("type", "text");
+            $(this).children("i").removeClass("am-icon-eye").addClass("am-icon-eye-slash");
         }else{
-            $("#password").attr("type", "password");
-            $("#eye").children("i").removeClass("am-icon-eye-slash").addClass("am-icon-eye");
+            $(this).parent().prev().attr("type", "password");
+            $(this).children("i").removeClass("am-icon-eye-slash").addClass("am-icon-eye");
         }
     });
 
-    $('#password').bind('input propertychange', function () {
-        var password = $("#password").val();
+    $("[type='password']").bind('input propertychange', function () {
+        var password = $(this).val();
         if (password.length < 9) {
-            $('#my-valid').fadeIn();
+            $(this).parent().siblings('.my-valid').fadeIn();
         } else {
-            $('#my-valid').fadeOut();
+            $(this).parent().siblings('.my-valid').fadeOut();
         }
     });
 
@@ -77,9 +77,10 @@ $(function() {
     var global_keystore;
     $("#create").click(function () {
         var password = $("#password").val();
-
         if(password.length>=9){
-
+            $("#password").val("");
+            $('#my-conment').fadeIn();
+            $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>创建中...");
             var wallet = ethers.Wallet.createRandom();
 
             // noinspection JSAnnotator
@@ -99,7 +100,6 @@ $(function() {
                     $("#my-storage").fadeIn();
                 }
                 $('#my-save').html(syntaxHighlight(wallet));
-                $('#my-conment').fadeIn();
 
             });
 
@@ -158,19 +158,20 @@ $(function() {
     $("#export").click(function () {
         var password = $("#password").val();
         if(password.length>=9){
+            $("#password").val("");
+            $('#my-conment').fadeIn();
+            $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>导出中...");
             if (typeof(Storage) !== "undefined") {
                 // 针对 localStorage/sessionStorage 的代码
                 var json = localStorage.getItem("ethersjs_wallet");
                 ethers.Wallet.fromEncryptedWallet(json, password).then(function(wallet) {
                     console.log("Address: " + wallet.address);
                     $('#my-save').html(syntaxHighlight(wallet));
-                    $('#my-conment').fadeIn();
                 });
             } else {
                 // 抱歉！不支持 Web Storage ..
                 $("#my-storage").fadeIn();
             }
-
             // var wallet = ethers.Wallet.fromMnemonic(password);
 
             /*var kss = lightwallet.keystore.deserialize(global_keystore);
@@ -189,6 +190,18 @@ $(function() {
             $('#my-valid').fadeIn();
         }
     });
+
+    $("#login").click(function () {
+        var username = $("#username").val();
+        var userpass = $("#userpass").val();
+        if(userpass.length>=9){
+            ethers.Wallet.fromBrainWallet(username, userpass).then(function(wallet) {
+                console.log(wallet);
+            });
+        }else{
+            $('#my-login-valid').fadeIn();
+        }
+    })
 
 });
 })(jQuery);
