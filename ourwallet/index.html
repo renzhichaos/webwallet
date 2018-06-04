@@ -33,6 +33,8 @@
 
     <link rel="stylesheet" href="assets/css/amazeui.min.css">
     <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+
     <style>
         pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
         .string { color: green; }
@@ -72,15 +74,57 @@
     <div class="am-container am-padding-vertical">
         <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
             <ul class="am-tabs-nav am-nav am-nav-tabs">
-                <li class="am-active"><a href="javascript: void(0)">操作钱包</a></li>
-                <li><a href="javascript: void(0)">登录钱包</a></li>
+                <li class="am-active"><a href="javascript: void(0)">登录钱包</a></li>
+                <li><a href="javascript: void(0)">操作钱包</a></li>
                 <li><a href="javascript: void(0)">。。。</a></li>
             </ul>
 
             <div class="am-tabs-bd">
                 <div class="am-tab-panel am-active">
+
+                    <div class="am-g">
+                        <div class="am-u-sm-10 am-u-sm-centered">
+                            <h1 class="am-text-center my-loginpass">登录钱包</h1>
+                            <h2 class="am-text-center my-loginpass">输入你的钱包密码（至少9位）</h2>
+                            <div class="am-input-group am-input-group-lg my-loginpass">
+                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+                                <input type="password" class="am-form-field" id="userpass" minlength="9" placeholder="密码,请不要忘记保存！">
+                                <span class="am-input-group-btn">
+                                    <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>
+                                </span>
+                            </div>
+                            <div id="my-login-valid" class="am-alert am-alert-danger my-valid" data-am-alert hidden>
+                                <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
+                            </div>
+                            <br>
+                            <div class="am-cf">
+                                <button type="button" class="am-btn am-btn-primary am-fr am-btn-xl" id="login">登录钱包</button>
+                            </div>
+                            <br>
+                            <div id="my-login-conment" class="am-panel am-panel-danger" hidden>
+                                <div class="am-panel-hd">
+                                    <h2 id="my-login" class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-login'}">
+                                        钱包：
+                                    </h2>
+                                </div>
+                                <div id="do-login" class="am-panel-collapse am-collapse am-in">
+                                    <div class="am-panel-bd">
+                                        <ul class="am-list am-list-static am-list-border am-list-striped">
+                                            <li>
+                                                <i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>
+                                                <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">0</span>
+                                                <span class="am-text-xl am-margin-left-sm">ETH:</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-tab-panel">
                     <h1 class="am-text-center">操作钱包</h1>
-                    <h2 class="am-text-center">输入一个强密码（至少9位）</h2>
+                    <h2 class="am-text-center">输入你的钱包密码（至少9位）</h2>
                     <div class="am-g">
                         <div class="am-u-sm-10 am-u-sm-centered">
                             <div class="am-input-group am-input-group-lg">
@@ -94,9 +138,11 @@
                                 <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
                             </div>
                             <br>
-                            <div class="am-cf">
-                                <button type="button" class="am-btn am-btn-primary am-fl am-btn-xl" id="create">创建钱包</button>
-                                <button type="button" class="am-btn am-btn-primary am-fr am-btn-xl" id="export">导出钱包</button>
+                            <div class="am-fr">
+                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="del">删除钱包</button>
+                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="create">创建钱包</button>
+                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="import">导入钱包</button>
+                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="export">导出钱包</button>
                             </div>
                             <br>
                             <div id="my-conment" class="am-panel am-panel-danger" hidden>
@@ -114,46 +160,6 @@
                         </div>
                     </div>
 
-                </div>
-                <div class="am-tab-panel">
-                    <h1 class="am-text-center">登录钱包</h1>
-                    <h2 class="am-text-center">输入一个账户 & 强密码（至少9位）</h2>
-                    <div class="am-g">
-                        <div class="am-u-sm-10 am-u-sm-centered">
-                            <div class="am-input-group am-input-group-lg">
-                                <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
-                                <input type="text" class="am-form-field" id="username" placeholder="账号,请不要忘记保存！">
-                            </div>
-                            <div class="am-input-group am-input-group-lg">
-                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
-                                <input type="password" class="am-form-field" id="userpass" minlength="9" placeholder="密码,请不要忘记保存！">
-                                <span class="am-input-group-btn">
-                                    <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>
-                                </span>
-                            </div>
-                            <div id="my-login-valid" class="am-alert am-alert-danger my-valid" data-am-alert hidden>
-                                <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
-                            </div>
-                            <br>
-                            <div class="am-cf">
-                                <button type="button" class="am-btn am-btn-primary am-fl am-btn-xl" id="del">删除钱包</button>
-                                <button type="button" class="am-btn am-btn-primary am-fr am-btn-xl" id="login">登录钱包</button>
-                            </div>
-                            <br>
-                            <div id="my-login-conment" class="am-panel am-panel-danger" hidden>
-                                <div class="am-panel-hd">
-                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-login'}">
-                                        请保存钱包的以下信息：
-                                    </h2>
-                                </div>
-                                <div id="do-login" class="am-panel-collapse am-collapse am-in">
-                                    <div class="am-panel-bd">
-                                        <pre id="my-login"></pre>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="am-tab-panel">
                     <section data-am-widget="accordion" class="am-accordion am-accordion-basic" data-am-accordion='{  }'>
