@@ -71,12 +71,24 @@
 </section>
 
 <main>
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">删除钱包</div>
+            <div class="am-modal-bd">
+                请先保存你的钱包信息，确定要删除钱包吗？
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            </div>
+        </div>
+    </div>
     <div class="am-container am-padding-vertical">
         <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
             <ul class="am-tabs-nav am-nav am-nav-tabs">
                 <li class="am-active"><a href="javascript: void(0)">登录钱包</a></li>
-                <li><a href="javascript: void(0)">操作钱包</a></li>
-                <li><a href="javascript: void(0)">。。。</a></li>
+                <li><a href="javascript: void(0)">管理钱包</a></li>
+                <li><a href="javascript: void(0)">导入钱包</a></li>
             </ul>
 
             <div class="am-tabs-bd">
@@ -96,9 +108,12 @@
                             <div id="my-login-valid" class="am-alert am-alert-danger my-valid" data-am-alert hidden>
                                 <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
                             </div>
+                            <div id="my-login-valid2" class="am-alert am-alert-danger" data-am-alert hidden>
+                                <p>请先创建/导入钱包后再登录！</p>
+                            </div>
                             <br>
-                            <div class="am-cf">
-                                <button type="button" class="am-btn am-btn-primary am-fr am-btn-xl" id="login">登录钱包</button>
+                            <div class="am-btn-group am-btn-group-justify">
+                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="login">登录钱包</a>
                             </div>
                             <br>
                             <div id="my-login-conment" class="am-panel am-panel-danger" hidden>
@@ -123,7 +138,7 @@
                     </div>
                 </div>
                 <div class="am-tab-panel">
-                    <h1 class="am-text-center">操作钱包</h1>
+                    <h1 class="am-text-center">管理钱包</h1>
                     <h2 class="am-text-center">输入你的钱包密码（至少9位）</h2>
                     <div class="am-g">
                         <div class="am-u-sm-10 am-u-sm-centered">
@@ -137,18 +152,20 @@
                             <div id="my-valid" class="am-alert am-alert-danger my-valid" data-am-alert hidden>
                                 <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
                             </div>
+                            <div id="my-valid2" class="am-alert am-alert-danger" data-am-alert hidden>
+                                <p>请先创建/导入钱包后再删除！</p>
+                            </div>
                             <br>
-                            <div class="am-fr">
-                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="del">删除钱包</button>
-                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="create">创建钱包</button>
-                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="import">导入钱包</button>
-                                <button type="button" class="am-btn am-btn-primary am-btn-xl" id="export">导出钱包</button>
+                            <div class="am-btn-group am-btn-group-justify">
+                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="del">删除钱包</a>
+                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="create">创建钱包</a>
+                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="export">导出钱包</a>
                             </div>
                             <br>
                             <div id="my-conment" class="am-panel am-panel-danger" hidden>
                                 <div class="am-panel-hd">
                                     <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-save'}">
-                                        请保存钱包的以下信息：
+                                        请保存钱包信息：
                                     </h2>
                                 </div>
                                 <div id="do-save" class="am-panel-collapse am-collapse am-in">
@@ -159,44 +176,53 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+
                 <div class="am-tab-panel">
-                    <section data-am-widget="accordion" class="am-accordion am-accordion-basic" data-am-accordion='{  }'>
-                        <dl class="am-accordion-item am-active">
-                            <dt class="am-accordion-title">
-                                就这样恣意的活着
-                            </dt>
-                            <dd class="am-accordion-bd am-collapse am-in">
-                                <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
-                                <div class="am-accordion-content">
-                                    置身人群中 <br/> 你只需要被淹没 享受 沉默 <br/> 退到人群后 <br/> 你只需给予双手 微笑 等候
+                    <h1 class="am-text-center">导入钱包</h1>
+                    <h2 class="am-text-center">输入你的钱包信息</h2>
+                    <div class="am-g">
+                        <div class="am-u-sm-10 am-u-sm-centered">
+                            <div class="am-form-group">
+                                <select id="my-import-type" data-am-selected>
+                                    <option value="privatekey">私钥</option>
+                                    <option value="mnemonic">助记词</option>
+                                    <option value="keystore">Keystore</option>
+                                </select>
+                            </div>
+                            <div class="am-form-group">
+                                <textarea class="am-form-field" rows="5" id="importinput"></textarea>
+                            </div>
+                            <br>
+                            <div class="am-input-group am-input-group-lg">
+                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+                                <input type="password" class="am-form-field" id="importpass" minlength="9" placeholder="密码,请不要忘记保存！">
+                                <span class="am-input-group-btn">
+                                    <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>
+                                </span>
+                            </div>
+                            <div id="my-import-valid" class="am-alert am-alert-danger my-valid" data-am-alert hidden>
+                                <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
+                            </div>
+                            <br>
+                            <div class="am-btn-group am-btn-group-justify">
+                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="import">导入钱包</a>
+                            </div>
+                            <br>
+                            <div id="my-import-conment" class="am-panel am-panel-danger" hidden>
+                                <div class="am-panel-hd">
+                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-import-save'}">
+                                        导入信息：
+                                    </h2>
                                 </div>
-                            </dd>
-                        </dl>
-                        <dl class="am-accordion-item">
-                            <dt class="am-accordion-title">
-                                让生命去等候，去等候，去等候，去等候
-                            </dt>
-                            <dd class="am-accordion-bd am-collapse ">
-                                <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
-                                <div class="am-accordion-content">
-                                    走在忠孝东路 <br/> 徘徊在茫然中 <br/> 在我的人生旅途 <br/> 选择了多少错误 <br/> 我在睡梦中惊醒 <br/> 感叹悔言无尽 <br/> 恨我不能说服自己 <br/> 接受一切教训 <br/> 让生命去等候 <br/> 等候下一个漂流 <br/> 让生命去等候 <br/>等候下一个伤口
+                                <div id="do-import-save" class="am-panel-collapse am-collapse am-in">
+                                    <div class="am-panel-bd">
+                                        <pre id="my-import-save"></pre>
+                                    </div>
                                 </div>
-                            </dd>
-                        </dl>
-                        <dl class="am-accordion-item">
-                            <dt class="am-accordion-title">
-                                我就这样告别山下的家
-                            </dt>
-                            <dd class="am-accordion-bd am-collapse ">
-                                <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
-                                <div class="am-accordion-content">
-                                    我就这样告别山下的家，我实在不愿轻易让眼泪留下。我以为我并不差不会害怕，我就这样自己照顾自己长大。我不想因为现实把头低下，我以为我并不差能学会虚假。怎样才能够看穿面具里的谎话？别让我的真心散的像沙。如果有一天我变得更复杂，还能不能唱出歌声里的那幅画？
-                                </div>
-                            </dd>
-                        </dl>
-                    </section>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>

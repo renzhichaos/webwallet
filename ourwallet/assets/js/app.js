@@ -42,11 +42,13 @@ $(function() {
 
                 balancePromise.then(function(balance) {
                     var etherString = ethers.utils.formatEther(balance);
-                    $('#my-login').html("钱包：");
+                    $('#my-login').html("钱包地址："+wallet.address);
                     $("#eth").html(etherString+" ETH");
                     console.log("walletbalance:"+etherString);
                 });
             });
+        }else if(!localStorage.getItem("ethersjs_wallet")){
+            $('#my-login-valid2').fadeIn();
         }
     } else {
         // 抱歉！不支持 Web Storage ..
@@ -74,10 +76,6 @@ $(function() {
             return '<span class="' + cls + '">' + match + '</span>';
         });
     }
-
-    /*var bip39 = require('bip39');
-    var hdkey = require('ethereumjs-wallet/hdkey');
-    var util = require('ethereumjs-util');*/
 
     $(".my-eye").click(function() {
         if($(this).children("i").hasClass("am-icon-eye")) {
@@ -107,191 +105,274 @@ $(function() {
             $("#password").val("");
             $('#my-conment').fadeIn();
             $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>创建中...");
-            var wallet = ethers.Wallet.createRandom();
+            try{
+                var wallet = ethers.Wallet.createRandom();
 
-            // noinspection JSAnnotator
-            function callback(percent) {
-                console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
+                // noinspection JSAnnotator
+                function callback(percent) {
+                    console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
+                }
+
+                var encryptPromise = wallet.encrypt(password, callback);
+
+                encryptPromise.then(function(json) {
+                    console.log(json);
+                    if (typeof(Storage) !== "undefined") {
+                        // 针对 localStorage/sessionStorage 的代码
+                        localStorage.setItem("ethersjs_wallet", json);
+                    } else {
+                        // 抱歉！不支持 Web Storage ..
+                        $("#my-storage").fadeIn();
+                    }
+                    $('#my-save').html(syntaxHighlight(wallet));
+
+                }, function (err) {
+                    $('#my-save').html(err);
+                });
             }
-
-            var encryptPromise = wallet.encrypt(password, callback);
-
-            encryptPromise.then(function(json) {
-                console.log(json);
-                if (typeof(Storage) !== "undefined") {
-                    // 针对 localStorage/sessionStorage 的代码
-                    localStorage.setItem("ethersjs_wallet", json);
-                } else {
-                    // 抱歉！不支持 Web Storage ..
-                    $("#my-storage").fadeIn();
-                }
-                $('#my-save').html(syntaxHighlight(wallet));
-
-            });
-
-
-            /*var secretSeed = lightwallet.keystore.generateRandomSeed();
-            console.log("secretSeed:"+secretSeed);
-            lightwallet.keystore.createVault(
-                {
-                    password: password,
-                    seedPhrase: secretSeed,
-                    hdPathString: "m/44'/60'/0'/0/0"
-                }, function (err, ks) {
-                    global_keystore = ks;
-                    console.log("keystore:");
-                    console.log(ks);
-                    ks.keyFromPassword(password, function (err2, pwDerivedKey) {
-                        console.log("pwkey:"+pwDerivedKey);
-                        ks.generateNewAddress(pwDerivedKey);
-                        console.log(ks);
-                        console.log("addresses:");
-                        console.log(ks.getAddresses());
-                        console.log("privatekey:");
-                        console.log(ks.exportPrivateKey(ks.getAddresses()[0], pwDerivedKey));
-                        global_keystore = ks.serialize();
-                        console.log("keystore2:"+global_keystore);
-                    });
-                }
-
-            );*/
-
-            /*var mnemonic = bip39.generateMnemonic();
-            console.log(mnemonic);
-            var seed = bip39.mnemonicToSeed(mnemonic);
-            console.log(seed);
-            var hdWallet = hdkey.fromMasterSeed(seed);
-            console.log(hdWallet);
-            var key1 = hdWallet.derivePath("m/44'/60'/0'/0/0");
-            var address1 = util.pubToAddress(key1._hdkey._publicKey, true);
-            console.log(address1);
-            address1 = util.toChecksumAddress(address1.toString('hex'));
-            console.log(address1);*/
-
-            // myWallet.create(1);
-            // console.log(myWallet);
-            // var myWalleten = myWallet.encrypt(password);
-            // console.log(myWalleten);
-            // var save = myWallet.save(password);
-            // console.log(save);
-            // var encryptwallet = web3.eth.accounts.wallet.encrypt(password);
-            // console.log(encryptwallet);
+            catch(err)
+            {
+                $('#my-save').html(err);
+            }
         }else{
             $('#my-valid').fadeIn();
         }
     });
 
     $("#import").click(function () {
-        var password = $("#password").val();
-        if(password.length>=9){
-            $("#password").val("");
-            $('#my-conment').fadeIn();
-            $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>导入中...");
-            var wallet = ethers.Wallet(password);
+        var importpass = $("#importpass").val();
+        var importtype = $("#my-import-type").val();
+        var importinput = $("#importinput").val();
+        if(importpass.length>=9 && importinput != ""){
+            $("#importpass").val("");
+            $('#my-import-conment').fadeIn();
+            $('#my-import-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>导入中...");
+            if(importtype == "privatekey") {
+                try
+                {
+                    var wallet = new ethers.Wallet(importinput);
+                    console.log("Address: " + wallet.address);
+                    // noinspection JSAnnotator
+                    function callback(percent) {
+                        console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
+                    }
 
-            // noinspection JSAnnotator
-            function callback(percent) {
-                console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
-            }
+                    var encryptPromise = wallet.encrypt(importpass, callback);
 
-            var encryptPromise = wallet.encrypt(password, callback);
+                    encryptPromise.then(function (json) {
+                        console.log(json);
+                        if (typeof(Storage) !== "undefined") {
+                            // 针对 localStorage/sessionStorage 的代码
+                            localStorage.setItem("ethersjs_wallet", json);
+                        } else {
+                            // 抱歉！不支持 Web Storage ..
+                            $("#my-storage").fadeIn();
+                        }
+                        $('#my-import-save').html(syntaxHighlight(wallet));
 
-            encryptPromise.then(function(json) {
-                console.log(json);
-                if (typeof(Storage) !== "undefined") {
-                    // 针对 localStorage/sessionStorage 的代码
-                    localStorage.setItem("ethersjs_wallet", json);
-                } else {
-                    // 抱歉！不支持 Web Storage ..
-                    $("#my-storage").fadeIn();
+                    }, function (err) {
+                        $('#my-import-save').html(err);
+                    });
                 }
-                $('#my-save').html(syntaxHighlight(wallet));
+                catch(err)
+                {
+                    $('#my-import-save').html(err);
+                }
 
-            });
+            }else if(importtype == "mnemonic"){
+                try
+                {
+                    var wallet = ethers.Wallet.fromMnemonic(importinput);
+                    console.log("Address: " + wallet.address);
+                    // noinspection JSAnnotator
+                    function callback(percent) {
+                        console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
+                    }
+
+                    var encryptPromise = wallet.encrypt(importpass, callback);
+
+                    encryptPromise.then(function (json) {
+                        console.log(json);
+                        if (typeof(Storage) !== "undefined") {
+                            // 针对 localStorage/sessionStorage 的代码
+                            localStorage.setItem("ethersjs_wallet", json);
+                        } else {
+                            // 抱歉！不支持 Web Storage ..
+                            $("#my-storage").fadeIn();
+                        }
+                        $('#my-import-save').html(syntaxHighlight(wallet));
+
+                    }, function (err) {
+                        $('#my-import-save').html(err);
+                    });
+                }
+                catch(err)
+                {
+                    $('#my-import-save').html(err);
+                }
+            }else if(importtype == "keystore"){
+                try
+                {
+                    var json = JSON.stringify(importinput);
+                    ethers.Wallet.fromEncryptedWallet(json, importpass).then(function(wallet) {
+                        console.log("Address: " + wallet.address);
+                        if (typeof(Storage) !== "undefined") {
+                            // 针对 localStorage/sessionStorage 的代码
+                            localStorage.setItem("ethersjs_wallet", json);
+                        } else {
+                            // 抱歉！不支持 Web Storage ..
+                            $("#my-storage").fadeIn();
+                        }
+                        $('#my-import-save').html(syntaxHighlight(wallet));
+                    }, function (err) {
+                        $('#my-import-save').html(err);
+                    });
+                }
+                catch(err)
+                {
+                    $('#my-import-save').html(err);
+                }
+            }
         }else{
-            $('#my-valid').fadeIn();
+            $('#my-import-valid').fadeIn();
         }
     });
 
     $("#export").click(function () {
-        var password = $("#password").val();
-        if(password.length>=9){
-            $("#password").val("");
-            $('#my-conment').fadeIn();
-            $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>导出中...");
-            if (typeof(Storage) !== "undefined") {
-                // 针对 localStorage/sessionStorage 的代码
-                var json = localStorage.getItem("ethersjs_wallet");
-                ethers.Wallet.fromEncryptedWallet(json, password).then(function(wallet) {
-                    console.log("Address: " + wallet.address);
-                    $('#my-save').html(syntaxHighlight(wallet));
-                });
-            } else {
-                // 抱歉！不支持 Web Storage ..
-                $("#my-storage").fadeIn();
+        if(localStorage.getItem("ethersjs_wallet")) {
+            var password = $("#password").val();
+            if(password.length>=9){
+                $("#password").val("");
+                $('#my-conment').fadeIn();
+                $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>导出中...");
+                if (typeof(Storage) !== "undefined") {
+                    // 针对 localStorage/sessionStorage 的代码
+                    try{
+                        var json = localStorage.getItem("ethersjs_wallet");
+                        ethers.Wallet.fromEncryptedWallet(json, password).then(function(wallet) {
+                            console.log("Address: " + wallet.address);
+                            var exportjson = {"地址":wallet.address, "私钥":wallet.privateKey, "助记词":wallet.mnemonic};
+                            $('#my-save').html(syntaxHighlight(exportjson)+"<br>Keystore:<br>"+syntaxHighlight(json));
+                        }, function (err) {
+                            $('#my-save').html(err);
+                        });
+                    }
+                    catch(err)
+                    {
+                        $('#my-save').html(err);
+                    }
+                } else {
+                    // 抱歉！不支持 Web Storage ..
+                    $("#my-storage").fadeIn();
+                }
+            }else{
+                $('#my-valid').fadeIn();
             }
-            // var wallet = ethers.Wallet.fromMnemonic(password);
-
-            /*var kss = lightwallet.keystore.deserialize(global_keystore);
-            kss.keyFromPassword(password, function (err, pwDerivedKey) {
-                console.log("pwkey:"+pwDerivedKey);
-                console.log("addresses:"+kss.getAddresses());
-                var privatekey = kss.exportPrivateKey(kss.getAddresses()[0], pwDerivedKey);
-                var aa = web3.eth.accounts.privateKeyToAccount(privatekey);
-                console.log(aa);
-                console.log("seed:"+kss.getSeed(pwDerivedKey));
-            })*/
-            /*myWallet.load(password);
-            console.log(myWallet);*/
-
         }else{
-            $('#my-valid').fadeIn();
+            $('#my-login-valid2').fadeIn();
         }
     });
 
     $("#login").click(function () {
-        var userpass = $("#userpass").val();
-        if(userpass.length>=9){
-            $("#userpass").val("");
-            $(".my-loginpass").fadeOut();
-            $("#login").fadeOut();
-            $('#my-login-conment').fadeIn();
-            $('#my-login').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>登录钱包中...");
-            if (typeof(Storage) !== "undefined") {
-                // 针对 localStorage/sessionStorage 的代码
-                var json = localStorage.getItem("ethersjs_wallet");
-                ethers.Wallet.fromEncryptedWallet(json, userpass).then(function(wallet) {
-                    infuraProvider = new ethers.providers.InfuraProvider(ethers.providers.networks.ropsten);
-                    wallet.provider = infuraProvider;
-                    myWallet = wallet;
-                    sessionStorage.setItem("login_wallet", userpass);
-                    console.log("Address: " + wallet.address);
-                    var balancePromise = myWallet.getBalance();
+        if(localStorage.getItem("ethersjs_wallet")) {
+            var userpass = $("#userpass").val();
+            if(userpass.length>=9){
+                $("#userpass").val("");
+                $('#my-login-conment').fadeIn();
+                $('#my-login').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>登录钱包中...");
+                if (typeof(Storage) !== "undefined") {
+                    // 针对 localStorage/sessionStorage 的代码
+                        var json = localStorage.getItem("ethersjs_wallet");
+                        ethers.Wallet.fromEncryptedWallet(json, userpass).then(function (wallet) {
+                            infuraProvider = new ethers.providers.InfuraProvider(ethers.providers.networks.ropsten);
+                            wallet.provider = infuraProvider;
+                            myWallet = wallet;
+                            sessionStorage.setItem("login_wallet", userpass);
+                            console.log("Address: " + wallet.address);
+                            var balancePromise = myWallet.getBalance();
 
-                    balancePromise.then(function(balance) {
-                        var etherString = ethers.utils.formatEther(balance);
-                        $('#my-login').html("钱包：");
-                        $("#eth").html(etherString+" ETH");
-                        console.log("walletbalance:"+etherString);
-                    });
-                });
-            } else {
-                // 抱歉！不支持 Web Storage ..
-                $("#my-storage").fadeIn();
+                            balancePromise.then(function (balance) {
+                                var etherString = ethers.utils.formatEther(balance);
+                                $(".my-loginpass").fadeOut();
+                                $("#login").fadeOut();
+                                $('#my-login').html("钱包地址：" + wallet.address);
+                                $("#eth").html(etherString + " ETH");
+                                console.log("walletbalance:" + etherString);
+                            });
+                        }, function (err) {
+                            $('#my-login').html(err);
+                        });
+                } else {
+                    // 抱歉！不支持 Web Storage ..
+                    $("#my-storage").fadeIn();
+                }
+            }else{
+                $('#my-login-valid').fadeIn();
             }
         }else{
-            $('#my-login-valid').fadeIn();
+            $('#my-login-valid2').fadeIn();
         }
     });
 
     $("#eth").click(function () {
-        var balancePromise = myWallet.getBalance();
+        try {
+            var balancePromise = myWallet.getBalance();
 
-        balancePromise.then(function(balance) {
-            var etherString = ethers.utils.formatEther(balance);
-            $("#eth").html(etherString+" ETH");
-            console.log("walletbalance:"+ethers.utils.formatEther(balance));
-        });
+            balancePromise.then(function (balance) {
+                var etherString = ethers.utils.formatEther(balance);
+                $("#eth").html(etherString + " ETH");
+                console.log("walletbalance:" + ethers.utils.formatEther(balance));
+            }, function (err) {
+                $('#eth').html(err);
+            });
+        }
+        catch(err)
+        {
+            $('#eth').html(err);
+        }
+    });
+
+    $("#del").click(function () {
+        if(localStorage.getItem("ethersjs_wallet")) {
+            var password = $("#password").val();
+            if(password.length>=9){
+                $('#my-confirm').modal({
+                    relatedTarget: this,
+                    onConfirm: function(options) {
+                        $("#password").val("");
+                        $('#my-conment').fadeIn();
+                        $('#my-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>删除中...");
+                        if (typeof(Storage) !== "undefined") {
+                            // 针对 localStorage/sessionStorage 的代码
+                            try{
+                                var json = localStorage.getItem("ethersjs_wallet");
+                                ethers.Wallet.fromEncryptedWallet(json, password).then(function(wallet) {
+                                    console.log("Address: " + wallet.address);
+                                    localStorage.removeItem("ethersjs_wallet");
+                                    $('#my-save').html("删除成功！");
+                                }, function (err) {
+                                    $('#my-save').html(err);
+                                });
+                            }
+                            catch(err)
+                            {
+                                $('#my-save').html(err);
+                            }
+                        } else {
+                            // 抱歉！不支持 Web Storage ..
+                            $("#my-storage").fadeIn();
+                        }
+                    },
+                    // closeOnConfirm: false,
+                    onCancel: function() {
+                    }
+                });
+            }else{
+                $('#my-valid').fadeIn();
+            }
+        }else{
+            $('#my-valid2').fadeIn();
+        }
     });
 
 });
