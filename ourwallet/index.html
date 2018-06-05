@@ -7,7 +7,7 @@
     <meta name="keywords" content="">
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
-    <title>Hello Amaze UI</title>
+    <title>OurWallet</title>
 
     <!-- Set render engine for 360 browser -->
     <meta name="renderer" content="webkit">
@@ -24,7 +24,7 @@
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <meta name="apple-mobile-web-app-title" content="OurWallet"/>
     <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
@@ -48,22 +48,29 @@
 <header class="am-topbar am-topbar-inverse ask-header">
     <div class="am-container">
         <h1 class="am-topbar-brand">
-            <a href="/" class="am-text-ir">Amaze UI</a>
+            <a href="/" class="am-text-ir">OurWallet</a>
         </h1>
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav">
-                <li class="am-active"><a href="#">关于我们</a></li>
-                <li><a href="http://amazeui.org" target="_blank">项目首页</a></li>
+                <li class="am-active"><a href="#">OurWallet</a></li>
+                <li><a href="/ourtoken/" target="_blank">Token管理</a></li>
             </ul>
         </div>
     </div>
 </header>
 <section class="ask-banner">
     <div class="am-container am-padding-vertical-lg">
-        <h1>世界，你好！</h1>
-        <p>欢迎使用 Amaze UI Stater Kit。</p>
+        <h1>欢迎使用 OurWallet. 请选择要连接到的网络：</h1>
+        <div class="am-form-group">
+            <select id="my-network" data-am-selected="{btnWidth: '100%'}">
+                <option value="homestead">Main Ethereum Network</option>
+                <option value="ropsten">Ropsten Test Network</option>
+                <option value="rinkeby">Rinkeby Test Network</option>
+                <option value="kovan">Kovan Test Network</option>
+            </select>
+        </div>
         <div id="my-storage" class="am-alert am-alert-danger" data-am-alert hidden>
             <p>浏览器不支持本地存储!请自行保存钱包信息!</p>
         </div>
@@ -95,11 +102,11 @@
                 <div class="am-tab-panel am-active">
 
                     <div class="am-g">
-                        <div class="am-u-sm-10 am-u-sm-centered">
+                        <div class="am-u-sm-12 am-u-sm-centered">
                             <h1 class="am-text-center my-loginpass">登录钱包</h1>
                             <h2 class="am-text-center my-loginpass">输入你的钱包密码（至少9位）</h2>
                             <div class="am-input-group am-input-group-lg my-loginpass">
-                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+
                                 <input type="password" class="am-form-field" id="userpass" minlength="9" placeholder="密码,请不要忘记保存！">
                                 <span class="am-input-group-btn">
                                     <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>
@@ -127,7 +134,7 @@
                                         <ul class="am-list am-list-static am-list-border am-list-striped">
                                             <li>
                                                 <i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>
-                                                <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">0</span>
+                                                <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">* ETH</span>
                                                 <span class="am-text-xl am-margin-left-sm">ETH:</span>
                                             </li>
                                         </ul>
@@ -141,9 +148,9 @@
                     <h1 class="am-text-center">管理钱包</h1>
                     <h2 class="am-text-center">输入你的钱包密码（至少9位）</h2>
                     <div class="am-g">
-                        <div class="am-u-sm-10 am-u-sm-centered">
+                        <div class="am-u-sm-12 am-u-sm-centered">
                             <div class="am-input-group am-input-group-lg">
-                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+
                                 <input type="password" class="am-form-field" id="password" minlength="9" placeholder="密码,请不要忘记保存！">
                                 <span class="am-input-group-btn">
                                     <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>
@@ -182,9 +189,9 @@
                     <h1 class="am-text-center">导入钱包</h1>
                     <h2 class="am-text-center">输入你的钱包信息</h2>
                     <div class="am-g">
-                        <div class="am-u-sm-10 am-u-sm-centered">
+                        <div class="am-u-sm-12 am-u-sm-centered">
                             <div class="am-form-group">
-                                <select id="my-import-type" data-am-selected>
+                                <select id="my-import-type" data-am-selected="{btnWidth: '100%'}">
                                     <option value="privatekey">私钥</option>
                                     <option value="mnemonic">助记词</option>
                                     <option value="keystore">Keystore</option>
@@ -195,7 +202,7 @@
                             </div>
                             <br>
                             <div class="am-input-group am-input-group-lg">
-                                <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+
                                 <input type="password" class="am-form-field" id="importpass" minlength="9" placeholder="密码,请不要忘记保存！">
                                 <span class="am-input-group-btn">
                                     <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>

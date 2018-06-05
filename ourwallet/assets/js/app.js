@@ -23,9 +23,43 @@ $(function() {
     console.log(web3);
     //var myWallet = web3.eth.accounts.wallet;
     var myWallet;
+    var network = ethers.providers.networks.homestead;//'homestead', 'ropsten', 'rinkeby', 'kovan'
+    var etherscanProvider = new ethers.providers.EtherscanProvider(network);
+    var infuraProvider = new ethers.providers.InfuraProvider(network);
+    var web3Provider = new ethers.providers.Web3Provider(web3.currentProvider, network);
+    var fallbackProvider = new ethers.providers.FallbackProvider([
+        etherscanProvider,
+        infuraProvider,
+        web3Provider
+    ]);
+    var provider = fallbackProvider;
+    console.log(network);
+
+    $("#my-network").on('change', function() {
+        network = $(this).val();
+        localStorage.setItem("ethersjs_network", network);
+        window.location.reload();
+    });
 
     if (typeof(Storage) !== "undefined") {
         // 针对 localStorage/sessionStorage 的代码
+
+        if(localStorage.getItem("ethersjs_network")){
+            network = localStorage.getItem("ethersjs_network");
+            $("#my-network").find("option[value='"+network+"']").attr('selected', true);
+            $("#my-network").trigger('changed.selected.amui');
+            etherscanProvider = new ethers.providers.EtherscanProvider(network);
+            infuraProvider = new ethers.providers.InfuraProvider(network);
+            web3Provider = new ethers.providers.Web3Provider(web3.currentProvider, network);
+            fallbackProvider = new ethers.providers.FallbackProvider([
+                etherscanProvider,
+                infuraProvider,
+                web3Provider
+            ]);
+            provider = fallbackProvider;
+            console.log(provider);
+        }
+
         if(sessionStorage.getItem("login_wallet") && localStorage.getItem("ethersjs_wallet")){
             $(".my-loginpass").fadeOut();
             $("#login").fadeOut();
@@ -34,13 +68,12 @@ $(function() {
             var userpass = sessionStorage.getItem("login_wallet");
             var json = localStorage.getItem("ethersjs_wallet");
             ethers.Wallet.fromEncryptedWallet(json, userpass).then(function(wallet) {
-                infuraProvider = new ethers.providers.InfuraProvider(ethers.providers.networks.ropsten);
-                wallet.provider = infuraProvider;
+                wallet.provider = provider;
                 myWallet = wallet;
                 console.log("Address: " + wallet.address);
                 var balancePromise = myWallet.getBalance();
 
-                balancePromise.then(function(balance) {
+                provider.getBalance(wallet.address).then(function(balance) {
                     var etherString = ethers.utils.formatEther(balance);
                     $('#my-login').html("钱包地址："+wallet.address);
                     $("#eth").html(etherString+" ETH");
@@ -95,9 +128,6 @@ $(function() {
             $(this).parent().siblings('.my-valid').fadeOut();
         }
     });
-
-
-    var infuraProvider;
 
     $("#create").click(function () {
         var password = $("#password").val();
@@ -284,8 +314,7 @@ $(function() {
                     // 针对 localStorage/sessionStorage 的代码
                         var json = localStorage.getItem("ethersjs_wallet");
                         ethers.Wallet.fromEncryptedWallet(json, userpass).then(function (wallet) {
-                            infuraProvider = new ethers.providers.InfuraProvider(ethers.providers.networks.ropsten);
-                            wallet.provider = infuraProvider;
+                            wallet.provider = provider;
                             myWallet = wallet;
                             sessionStorage.setItem("login_wallet", userpass);
                             console.log("Address: " + wallet.address);
