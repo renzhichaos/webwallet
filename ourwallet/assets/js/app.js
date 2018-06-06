@@ -21,10 +21,29 @@ $(function() {
     }
 
     console.log(web3);
-    //var myWallet = web3.eth.accounts.wallet;
+
+    /*var version = web3.version.api;
+    console.log(version);
+    ////0x3Ee12EB76229A77fb71D8E8A94D4035E90F0d708
+    $.getJSON('http://api.etherscan.io/api?module=contract&action=getabi&address=0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359', function (data) {
+        var contractABI = "";
+        contractABI = JSON.parse(data.result);
+        console.log(contractABI);
+        if (contractABI != ''){
+            var MyContract = new web3.eth.Contract(contractABI);
+            MyContract.options.address = 0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359;
+            var result = myContractInstance.memberId("0xfe8ad7dd2f564a877cc23feea6c0a9cc2e783715");
+            console.log("result1 : " + result);
+            var result = myContractInstance.members(1);
+            console.log("result2 : " + result);
+        } else {
+            console.log("Error" );
+        }
+    });*/
+
     var myWallet;
     var network = ethers.providers.networks.homestead;//'homestead', 'ropsten', 'rinkeby', 'kovan'
-    var etherscanProvider = new ethers.providers.EtherscanProvider(network);
+    var etherscanProvider = new ethers.providers.EtherscanProvider(network, "3GC258M4JPH9E4AFZ65K1XFXFV6DKBCQES");
     var infuraProvider = new ethers.providers.InfuraProvider(network);
     var web3Provider = new ethers.providers.Web3Provider(web3.currentProvider, network);
     var fallbackProvider = new ethers.providers.FallbackProvider([
@@ -32,14 +51,19 @@ $(function() {
         infuraProvider,
         web3Provider
     ]);
-    var provider = fallbackProvider;
-    console.log(network);
+    var myProvider = new ethers.providers.JsonRpcProvider(infuraProvider.url+"C1MIQHLneozsKWIZNMdR", network);
+    //var myProvider = etherscanProvider;
+    var provider = myProvider;
+
+    console.log(provider);
 
     $("#my-network").on('change', function() {
         network = $(this).val();
         localStorage.setItem("ethersjs_network", network);
         window.location.reload();
     });
+
+    var contractABI = [{"constant": true,"inputs": [],"name": "name","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [],"name": "totalSupply","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [{"name": "","type": "address"}],"name": "balances","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [],"name": "decimals","outputs": [{"name": "","type": "uint8"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_lock","type": "bool"}],"name": "setLock","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "_address","type": "address"}],"name": "balanceOf","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [],"name": "symbol","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_to","type": "address"},{"name": "_value","type": "uint256"}],"name": "transfer","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "users","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [],"name": "lock","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "view","type": "function"},{"anonymous": false,"inputs": [{"indexed": true,"name": "from","type": "address"},{"indexed": true,"name": "to","type": "address"},{"indexed": false,"name": "value","type": "uint256"}],"name": "Transfer","type": "event"}];
 
     if (typeof(Storage) !== "undefined") {
         // 针对 localStorage/sessionStorage 的代码
@@ -48,7 +72,7 @@ $(function() {
             network = localStorage.getItem("ethersjs_network");
             $("#my-network").find("option[value='"+network+"']").attr('selected', true);
             $("#my-network").trigger('changed.selected.amui');
-            etherscanProvider = new ethers.providers.EtherscanProvider(network);
+            etherscanProvider = new ethers.providers.EtherscanProvider(network, "3GC258M4JPH9E4AFZ65K1XFXFV6DKBCQES");
             infuraProvider = new ethers.providers.InfuraProvider(network);
             web3Provider = new ethers.providers.Web3Provider(web3.currentProvider, network);
             fallbackProvider = new ethers.providers.FallbackProvider([
@@ -56,7 +80,9 @@ $(function() {
                 infuraProvider,
                 web3Provider
             ]);
-            provider = fallbackProvider;
+            myProvider = new ethers.providers.JsonRpcProvider(infuraProvider.url+"C1MIQHLneozsKWIZNMdR", network);
+            //myProvider = etherscanProvider;
+            provider = myProvider;
             console.log(provider);
         }
 
@@ -72,13 +98,63 @@ $(function() {
                 myWallet = wallet;
                 console.log("Address: " + wallet.address);
                 var balancePromise = myWallet.getBalance();
-
-                provider.getBalance(wallet.address).then(function(balance) {
+                var pricePromise = myWallet.getBalance();//etherscanProvider.getEtherPrice();
+                var allPromise = Promise.all([balancePromise, pricePromise]);
+                allPromise.then(function(values) {
+                    console.log(values);
+                    var balance = values[0];
+                    var price = values[1];
                     var etherString = ethers.utils.formatEther(balance);
                     $('#my-login').html("钱包地址："+wallet.address);
-                    $("#eth").html(etherString+" ETH");
+                    $("#eth").html(price +" USD * "+etherString+" ETH");
+                    $('#my-login-valid2').fadeOut();
                     console.log("walletbalance:"+etherString);
+                    console.log("eth price:"+price);
+                }, function (err) {
+                    $('#my-login').html(err);
                 });
+
+                if(localStorage.getItem("ethersjs_token")) {
+                    var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
+                    for(var j = 0,len = tokens.length; j < len; j++){
+                        var contractAddress = tokens[j];
+                        console.log("token"+j+": "+tokens[j]);
+                        //$.getJSON('http://api.etherscan.io/api?module=contract&action=getabi&address='+contractAddress, function (data) {
+                        //  if (data.result !== "") {
+                        //      contractABI = JSON.parse(data.result);
+                        //  }
+                            console.log(contractABI);
+                            if (contractABI != '') {
+                                var MyContract = new ethers.Contract(contractAddress, contractABI, wallet);
+                                var balancesPromise = MyContract.balances(wallet.address);
+                                var namePromise = MyContract.name();
+                                var symbolPromise = MyContract.symbol();
+                                var decimalsPromise = MyContract.decimals();
+                                var lockPromise = MyContract.lock();
+                                var allPromises = Promise.all([namePromise, symbolPromise, decimalsPromise, lockPromise, balancesPromise]);
+
+                                allPromises.then(function (values) {
+                                    var name = values[0];
+                                    var symbol = values[1];
+                                    var decimals = values[2];
+                                    var lock = values[3];
+                                    var balances = ethers.utils.formatUnits(values[4], decimals);
+
+                                    $('#my-tokens').append('<li>\n' +
+                                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
+                                        '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">'+balances+' '+symbol+'</span>\n' +
+                                        '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
+                                        '</li>');
+                                    console.log('Values:' + values);
+                                }, function (err) {
+                                    $('#my-login').html(err);
+                                });
+                            } else {
+                                console.log("Error");
+                            }
+                        //});
+                    }
+                }
             });
         }else if(!localStorage.getItem("ethersjs_wallet")){
             $('#my-login-valid2').fadeIn();
@@ -155,7 +231,7 @@ $(function() {
                         $("#my-storage").fadeIn();
                     }
                     $('#my-save').html(syntaxHighlight(wallet));
-
+                    $('#my-login-valid2').fadeOut();
                 }, function (err) {
                     $('#my-save').html(err);
                 });
@@ -174,6 +250,7 @@ $(function() {
         var importtype = $("#my-import-type").val();
         var importinput = $("#importinput").val();
         if(importpass.length>=9 && importinput != ""){
+            $("#importinput").val("");
             $("#importpass").val("");
             $('#my-import-conment').fadeIn();
             $('#my-import-save').html("<i class=\"am-icon-spinner am-icon-pulse\"></i>导入中...");
@@ -199,7 +276,7 @@ $(function() {
                             $("#my-storage").fadeIn();
                         }
                         $('#my-import-save').html(syntaxHighlight(wallet));
-
+                        $('#my-login-valid2').fadeOut();
                     }, function (err) {
                         $('#my-import-save').html(err);
                     });
@@ -231,7 +308,7 @@ $(function() {
                             $("#my-storage").fadeIn();
                         }
                         $('#my-import-save').html(syntaxHighlight(wallet));
-
+                        $('#my-login-valid2').fadeOut();
                     }, function (err) {
                         $('#my-import-save').html(err);
                     });
@@ -254,6 +331,7 @@ $(function() {
                             $("#my-storage").fadeIn();
                         }
                         $('#my-import-save').html(syntaxHighlight(wallet));
+                        $('#my-login-valid2').fadeOut();
                     }, function (err) {
                         $('#my-import-save').html(err);
                     });
@@ -326,6 +404,7 @@ $(function() {
                                 $("#login").fadeOut();
                                 $('#my-login').html("钱包地址：" + wallet.address);
                                 $("#eth").html(etherString + " ETH");
+                                $('#my-login-valid2').fadeOut();
                                 console.log("walletbalance:" + etherString);
                             });
                         }, function (err) {
@@ -379,6 +458,7 @@ $(function() {
                                     console.log("Address: " + wallet.address);
                                     localStorage.removeItem("ethersjs_wallet");
                                     $('#my-save').html("删除成功！");
+                                    $('#my-login-valid2').fadeIn();
                                 }, function (err) {
                                     $('#my-save').html(err);
                                 });
