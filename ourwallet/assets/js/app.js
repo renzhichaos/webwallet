@@ -1,5 +1,22 @@
 (function($) {
 'use strict';
+    Array.prototype.distinct = function(){
+        var arr = this,
+            result = [],
+            i,
+            j,
+            len = arr.length;
+        for(i = 0; i < len; i++){
+            for(j = i + 1; j < len; j++){
+                if(arr[i] === arr[j]){
+                    j = ++i;
+                }
+            }
+            result.push(arr[i]);
+        }
+        return result;
+    }
+
 
 $(function() {
     var $fullText = $('.admin-fullText');
@@ -42,8 +59,10 @@ $(function() {
     });*/
 
     var myWallet;
+    var etherscanApikey = "3GC258M4JPH9E4AFZ65K1XFXFV6DKBCQES";
+    var infuraApikey = "C1MIQHLneozsKWIZNMdR";
     var network = ethers.providers.networks.homestead;//'homestead', 'ropsten', 'rinkeby', 'kovan'
-    var etherscanProvider = new ethers.providers.EtherscanProvider(network, "3GC258M4JPH9E4AFZ65K1XFXFV6DKBCQES");
+    var etherscanProvider = new ethers.providers.EtherscanProvider(network, etherscanApikey);
     var infuraProvider = new ethers.providers.InfuraProvider(network);
     var web3Provider = new ethers.providers.Web3Provider(web3.currentProvider, network);
     var fallbackProvider = new ethers.providers.FallbackProvider([
@@ -51,7 +70,7 @@ $(function() {
         infuraProvider,
         web3Provider
     ]);
-    var myProvider = new ethers.providers.JsonRpcProvider(infuraProvider.url+"C1MIQHLneozsKWIZNMdR", network);
+    var myProvider = new ethers.providers.JsonRpcProvider(infuraProvider.url+infuraApikey, network);
     //var myProvider = etherscanProvider;
     var provider = myProvider;
 
@@ -72,7 +91,7 @@ $(function() {
             network = localStorage.getItem("ethersjs_network");
             $("#my-network").find("option[value='"+network+"']").attr('selected', true);
             $("#my-network").trigger('changed.selected.amui');
-            etherscanProvider = new ethers.providers.EtherscanProvider(network, "3GC258M4JPH9E4AFZ65K1XFXFV6DKBCQES");
+            etherscanProvider = new ethers.providers.EtherscanProvider(network, etherscanApikey);
             infuraProvider = new ethers.providers.InfuraProvider(network);
             web3Provider = new ethers.providers.Web3Provider(web3.currentProvider, network);
             fallbackProvider = new ethers.providers.FallbackProvider([
@@ -80,10 +99,37 @@ $(function() {
                 infuraProvider,
                 web3Provider
             ]);
-            myProvider = new ethers.providers.JsonRpcProvider(infuraProvider.url+"C1MIQHLneozsKWIZNMdR", network);
+            myProvider = new ethers.providers.JsonRpcProvider(infuraProvider.url+infuraApikey, network);
             //myProvider = etherscanProvider;
             provider = myProvider;
             console.log(provider);
+        }
+
+        if(localStorage.getItem("ethersjs_token")) {
+            var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
+            for(var j = 0,len = tokens.length; j < len; j++){
+                var contractAddress = tokens[j];
+                console.log("token"+j+": "+tokens[j]);
+                var MyContract = new ethers.Contract(contractAddress, contractABI, provider);
+                var namePromise = MyContract.name();
+                var symbolPromise = MyContract.symbol();
+                var allPromises = Promise.all([namePromise, symbolPromise, contractAddress]);
+
+                allPromises.then(function (values) {
+                    var name = values[0];
+                    var symbol = values[1];
+                    var tokenAddress = values[2]
+
+                    $('#my-token-list').append('<li data-am-alert>\n' +
+                        '<button type="button" class="am-close">&times;</button>\n' +
+                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
+                        '<span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">'+tokenAddress+'</span>\n' +
+                        '<span class="am-text-lg am-margin-left-sm">'+name+'('+symbol+') :</span>\n' +
+                        '</li>');
+                }, function (err) {
+                    $('#my-token-conment').html(err);
+                });
+            }
         }
 
         if(sessionStorage.getItem("login_wallet") && localStorage.getItem("ethersjs_wallet")){
@@ -98,10 +144,20 @@ $(function() {
                 myWallet = wallet;
                 console.log("Address: " + wallet.address);
                 var balancePromise = myWallet.getBalance();
-                var pricePromise = myWallet.getBalance();//etherscanProvider.getEtherPrice();
+                /*var pricePromise = etherscanProvider.getEtherPrice();
+                pricePromise.then(function (data) {
+                    console.log(data);
+                });*/
+                var pricePromise = new Promise(function (resolve, reject){
+                    $.getJSON('https://api.etherscan.io/api?module=stats&action=ethprice&apikey='+etherscanApikey, function (err, data) {
+                    if(!err){
+                        resolve(data.result.ethusd);
+                    }else{
+                        console.error(err);
+                    }
+                });});
                 var allPromise = Promise.all([balancePromise, pricePromise]);
                 allPromise.then(function(values) {
-                    console.log(values);
                     var balance = values[0];
                     var price = values[1];
                     var etherString = ethers.utils.formatEther(balance);
@@ -146,6 +202,13 @@ $(function() {
                                         '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
                                         '</li>');
                                     console.log('Values:' + values);
+
+                                    $('#my-token-list').append('<li class="am-alert am-alert-secondary" data-am-alert>\n' +
+                                        '<button type="button" class="am-close">&times;</button>\n' +
+                                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
+                                        '<span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">'+contractAddress+'</span>\n' +
+                                        '<span class="am-text-lg am-margin-left-sm">'+name+'('+symbol+') :</span>\n' +
+                                        '</li>');
                                 }, function (err) {
                                     $('#my-login').html(err);
                                 });
@@ -481,6 +544,49 @@ $(function() {
             }
         }else{
             $('#my-valid2').fadeIn();
+        }
+    });
+
+
+    $("#addToken").click(function () {
+        var tokenAddress = $("#my-token-address").val();
+        if(web3.utils.isAddress(tokenAddress)){
+            $("#my-token-address").val("");
+            var tokens = new Array();
+            try{
+                if (typeof(Storage) !== "undefined") {
+                    // 针对 localStorage/sessionStorage 的代码
+                    if(localStorage.getItem("ethersjs_token")){
+                        tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
+                    }
+                    tokens.push(tokenAddress);
+                    localStorage.setItem("ethersjs_token", JSON.stringify(tokens.distinct()));
+                } else {
+                    // 抱歉！不支持 Web Storage ..
+                    $("#my-storage").fadeIn();
+                }
+                var MyContract = new ethers.Contract(tokenAddress, contractABI, provider);
+                var namePromise = MyContract.name();
+                var symbolPromise = MyContract.symbol();
+                var allPromises = Promise.all([namePromise, symbolPromise]);
+
+                allPromises.then(function (values) {
+                    var name = values[0];
+                    var symbol = values[1];
+                    $('#my-token-list').append('<li class="am-alert am-alert-secondary" data-am-alert>\n' +
+                        '<button type="button" class="am-close">&times;</button>\n' +
+                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
+                        '<span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">'+tokenAddress+'</span>\n' +
+                        '<span class="am-text-lg am-margin-left-sm">'+name+'('+symbol+') :</span>\n' +
+                        '</li>');
+                });
+            }
+            catch(err)
+            {
+                $('#my-token-valid').html(err).fadeIn();
+            }
+        }else{
+            $('#my-token-valid').fadeIn();
         }
     });
 

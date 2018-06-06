@@ -63,8 +63,8 @@
 <section class="ask-banner">
     <div class="am-container am-padding-vertical-lg">
         <h1>欢迎使用 OurWallet. 请选择要连接到的网络：</h1>
-        <div class="am-form-group">
-            <select id="my-network" data-am-selected="{btnWidth: '100%'}">
+        <div class="am-form am-form-group">
+            <select id="my-network">
                 <option value="homestead">Main Ethereum Network</option>
                 <option value="ropsten">Ropsten Test Network</option>
                 <option value="rinkeby">Rinkeby Test Network</option>
@@ -96,7 +96,7 @@
                 <li class="am-active"><a href="javascript: void(0)">登录钱包</a></li>
                 <li><a href="javascript: void(0)">管理钱包</a></li>
                 <li><a href="javascript: void(0)">导入钱包</a></li>
-                <li><a href="javascript: void(0)">Token显示</a></li>
+                <li><a href="javascript: void(0)">Token显示设置</a></li>
             </ul>
 
             <div class="am-tabs-bd">
@@ -187,8 +187,8 @@
                         <div class="am-u-sm-12 am-u-sm-centered">
                             <h1 class="am-text-center">导入钱包</h1>
                             <h2 class="am-text-center">输入你的钱包信息</h2>
-                            <div class="am-form-group">
-                                <select id="my-import-type" data-am-selected="{btnWidth: '100%'}">
+                            <div class="am-form am-form-group">
+                                <select id="my-import-type">
                                     <option value="privatekey">私钥</option>
                                     <option value="mnemonic">助记词</option>
                                     <option value="keystore">Keystore</option>
@@ -197,7 +197,6 @@
                             <div class="am-form-group">
                                 <textarea class="am-form-field" rows="5" id="importinput"></textarea>
                             </div>
-                            <br>
                             <div class="am-input-group am-input-group-lg">
 
                                 <input type="password" class="am-form-field" id="importpass" minlength="9" placeholder="密码,请不要忘记保存！">
@@ -231,35 +230,31 @@
                 <div class="am-tab-panel">
                     <div class="am-g">
                         <div class="am-u-sm-12 am-u-sm-centered">
-                            <h1 class="am-text-center">显示Token设置</h1>
+                            <h1 class="am-text-center">Token显示设置</h1>
                             <h2 class="am-text-center">输入你的Token合约地址</h2>
-                            <div class="am-input-group am-input-group-lg">
-                                <input type="text" class="am-form-field" id="my-token-address" minlength="9" placeholder="密码,请不要忘记保存！">
-                                <span class="am-input-group-btn">
-                                    <button class="am-btn am-btn-default my-eye" type="button"><i class="am-icon-eye am-icon-fw"></i></button>
-                                </span>
+                            <div class="am-form-group am-input-group-lg">
+                                <input type="text" class="am-form-field" id="my-token-address" placeholder="Token合约地址">
                             </div>
-                            <div id="my-token-valid" class="am-alert am-alert-danger my-valid" data-am-alert hidden>
-                                <p>密码至少需要9位!请确保密码足够强!不要忘记保存！</p>
+                            <div id="my-token-valid" class="am-alert am-alert-danger" data-am-alert hidden>
+                                <p>合约地址不正确！</p>
                             </div>
-                            <br>
                             <div class="am-btn-group am-btn-group-justify">
-                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="dels">删除钱包</a>
-                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="createsss">创建钱包</a>
-                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="exportsss">导出钱包</a>
+                                <a type="button" class="am-btn am-btn-primary am-btn-xl" id="addToken">添加Token显示</a>
                             </div>
                             <br>
-                            <div id="my-conments" class="am-panel am-panel-danger" hidden>
+                            <div id="my-token-conment" class="am-panel am-panel-default"d>
                                 <div class="am-panel-hd">
-                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-saves'}">
-                                        请保存钱包信息：
+                                    <h2 class="am-panel-title">
+                                        Token显示：
                                     </h2>
                                 </div>
-                                <div id="do-saves" class="am-panel-collapse am-collapse am-in">
-                                    <div class="am-panel-bd">
-                                        <pre id="my-saves"></pre>
-                                    </div>
-                                </div>
+                                <ul class="am-list am-list-static" id="my-token-list">
+                                    <li class="am-alert am-alert-secondary" data-am-alert>
+                                        <i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>
+                                        <span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">* ETH</span>
+                                        <span class="am-text-lg am-margin-left-sm">ETH:</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
