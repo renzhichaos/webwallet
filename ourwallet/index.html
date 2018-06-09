@@ -64,12 +64,15 @@
     <div class="am-container am-padding-vertical-lg">
         <h1>欢迎使用 OurWallet. 请选择要连接到的网络：</h1>
         <div class="am-form am-form-group">
-            <select id="my-network">
+            <select id="my-network" data-am-selected="{btnWidth: '100%'}">
                 <option value="homestead">Main Ethereum Network</option>
                 <option value="ropsten">Ropsten Test Network</option>
                 <option value="rinkeby">Rinkeby Test Network</option>
                 <option value="kovan">Kovan Test Network</option>
             </select>
+        </div>
+        <div class="am-form am-text-center">
+            <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="price">1 ETH ≈≈ * USD</span>
         </div>
         <div id="my-storage" class="am-alert am-alert-danger" data-am-alert hidden>
             <p>浏览器不支持本地存储!请自行保存钱包信息!</p>
@@ -134,7 +137,6 @@
                                             <li>
                                                 <i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>
                                                 <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">* ETH</span>
-                                                <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="price">* USD</span>
                                                 <span class="am-text-xl am-margin-left-sm">ETH:</span>
                                             </li>
                                         </ul>
@@ -239,6 +241,9 @@
                             <div id="my-token-valid" class="am-alert am-alert-danger" data-am-alert hidden>
                                 <p>合约地址不正确！</p>
                             </div>
+                            <div id="my-token-valid2" class="am-alert am-alert-danger" data-am-alert hidden>
+                                <p>Token合约地址已经存在！</p>
+                            </div>
                             <div class="am-btn-group am-btn-group-justify">
                                 <a type="button" class="am-btn am-btn-primary am-btn-xl" id="addToken">添加Token显示</a>
                             </div>
@@ -250,11 +255,6 @@
                                     </h2>
                                 </div>
                                 <ul class="am-list am-list-static" id="my-token-list">
-                                    <li class="am-alert am-alert-secondary" data-am-alert>
-                                        <i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>
-                                        <span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">* ETH</span>
-                                        <span class="am-text-lg am-margin-left-sm">ETH:</span>
-                                    </li>
                                 </ul>
                             </div>
                         </div>

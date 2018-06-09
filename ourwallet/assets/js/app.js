@@ -14,14 +14,27 @@ $(function() {
             len = arr.length;
         for(i = 0; i < len; i++){
             for(j = i + 1; j < len; j++){
-                if(arr[i] === arr[j]){
+                if(JSON.stringify(arr[i]) === JSON.stringify(arr[j])){
                     j = ++i;
                 }
             }
             result.push(arr[i]);
         }
         return result;
-    }
+    };
+
+    Array.prototype.indexOf = function(val) {
+        for (var i = 0; i < this.length; i++) {
+            if (JSON.stringify(this[i]) == JSON.stringify(val)) return i;
+        }
+        return -1;
+    };
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
 
     $(document).on($.AMUI.fullscreen.raw.fullscreenchange, function() {
         $fullText.text($.AMUI.fullscreen.isFullscreen ? '退出全屏' : '开启全屏');
@@ -85,9 +98,8 @@ $(function() {
 
     $.getJSON('https://api.etherscan.io/api?module=stats&action=ethprice&apikey='+etherscanApikey, function (data) {
         console.log(data);
-        JSON.stringify(data.result);
-        console.log("eth price:"+JSON.stringify(price));
-        $("#price").html(data.result.ethusd +" USD");
+        console.log("eth price:"+JSON.stringify(data.result));
+        $("#price").html("1 ETH ≈≈ "+ data.result.ethusd +" USD");
     });
 
     if (typeof(Storage) !== "undefined") {
@@ -114,27 +126,17 @@ $(function() {
         if(localStorage.getItem("ethersjs_token")) {
             var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
             for(var j = 0,len = tokens.length; j < len; j++){
-                var contractAddress = tokens[j];
-                console.log("token"+j+": "+tokens[j]);
-                var MyContract = new ethers.Contract(contractAddress, contractABI, provider);
-                var namePromise = MyContract.name();
-                var symbolPromise = MyContract.symbol();
-                var allPromises = Promise.all([namePromise, symbolPromise, contractAddress]);
+                console.log("token"+j+": "+JSON.stringify(tokens[j]));
+                var tokenAddress = tokens[j].address;
+                var name = tokens[j].name;
+                var symbol = tokens[j].symbol;
+                var decimals = tokens[j].decimals;
 
-                allPromises.then(function (values) {
-                    var name = values[0];
-                    var symbol = values[1];
-                    var tokenAddress = values[2]
-
-                    $('#my-token-list').append('<li data-am-alert>\n' +
-                        '<button type="button" class="am-close">&times;</button>\n' +
-                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
-                        '<span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">'+tokenAddress+'</span>\n' +
-                        '<span class="am-text-lg am-margin-left-sm">'+name+'('+symbol+') :</span>\n' +
-                        '</li>');
-                }, function (err) {
-                    $('#my-token-conment').html(err);
-                });
+                $('#my-token-list').append('<li class="am-alert am-alert-secondary am-cf my-alert" data-am-alert id="'+
+                    tokenAddress+'">\n' +
+                    '<button type="button" class="am-close">&times;</button>\n' +
+                    '<p class="am-text-lg am-text-center am-text-break">'+name+'('+symbol+') :'+tokenAddress+'</p>\n' +
+                    '</li>');
             }
         }
 
@@ -166,18 +168,18 @@ $(function() {
                 if(localStorage.getItem("ethersjs_token")) {
                     var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
                     for(var j = 0,len = tokens.length; j < len; j++){
-                        var contractAddress = tokens[j];
-                        console.log("token"+j+": "+tokens[j]);
+                        console.log("token"+j+": "+JSON.stringify(tokens[j]));
+                        var tokenAddress = tokens[j].address;
+                        var name = tokens[j].name;
+                        var symbol = tokens[j].symbol;
+                        var decimals = tokens[j].decimals;
 
                         console.log(contractABI);
                         if (contractABI != '') {
-                            var MyContract = new ethers.Contract(contractAddress, contractABI, wallet);
+                            var MyContract = new ethers.Contract(tokenAddress, contractABI, wallet);
                             var balancesPromise = MyContract.balances(wallet.address);
-                            var namePromise = MyContract.name();
-                            var symbolPromise = MyContract.symbol();
-                            var decimalsPromise = MyContract.decimals();
                             var lockPromise = MyContract.lock();
-                            var allPromises = Promise.all([namePromise, symbolPromise, decimalsPromise, lockPromise, balancesPromise]);
+                            var allPromises = Promise.all([name, symbol, decimals, lockPromise, balancesPromise, tokenAddress]);
 
                             allPromises.then(function (values) {
                                 var name = values[0];
@@ -185,13 +187,15 @@ $(function() {
                                 var decimals = values[2];
                                 var lock = values[3];
                                 var balances = ethers.utils.formatUnits(values[4], decimals);
+                                var tokenAddress = values[5];
 
-                                $('#my-tokens').append('<li>\n' +
+                                $('#my-tokens').append('<li class="'+tokenAddress+'">\n' +
                                     '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
-                                    '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">'+balances+' '+symbol+'</span>\n' +
+                                    '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm">'+
+                                    balances+' '+symbol+'</span>\n' +
                                     '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
                                     '</li>');
-                                console.log('Values:' + values);
+                                console.log('token:' + values);
                             }, function (err) {
                                 $('#my-login').html(err);
                             });
@@ -202,6 +206,7 @@ $(function() {
                     }
                 }
             });
+            $('#my-login-valid2').fadeOut();
         }else if(!localStorage.getItem("ethersjs_wallet")){
             $('#my-login-valid2').fadeIn();
         }
@@ -286,6 +291,7 @@ $(function() {
             {
                 $('#my-save').html(err);
             }
+            $('#my-valid').fadeOut();
         }else{
             $('#my-valid').fadeIn();
         }
@@ -387,6 +393,7 @@ $(function() {
                     $('#my-import-save').html(err);
                 }
             }
+            $('#my-import-valid').fadeOut();
         }else{
             $('#my-import-valid').fadeIn();
         }
@@ -419,9 +426,11 @@ $(function() {
                     // 抱歉！不支持 Web Storage ..
                     $("#my-storage").fadeIn();
                 }
+                $('#my-valid').fadeOut();
             }else{
                 $('#my-valid').fadeIn();
             }
+            $('#my-login-valid2').fadeOut();
         }else{
             $('#my-login-valid2').fadeIn();
         }
@@ -453,55 +462,59 @@ $(function() {
                             $('#my-login-valid2').fadeOut();
                             console.log("walletbalance:" + etherString);
                         });
+
+                        if(localStorage.getItem("ethersjs_token")) {
+                            var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
+                            for(var j = 0,len = tokens.length; j < len; j++){
+                                console.log("token"+j+": "+JSON.stringify(tokens[j]));
+                                var tokenAddress = tokens[j].address;
+                                var name = tokens[j].name;
+                                var symbol = tokens[j].symbol;
+                                var decimals = tokens[j].decimals;
+
+                                console.log(contractABI);
+                                if (contractABI != '') {
+                                    var MyContract = new ethers.Contract(tokenAddress, contractABI, myWallet);
+                                    var balancesPromise = MyContract.balances(wallet.address);
+                                    var lockPromise = MyContract.lock();
+                                    var allPromises = Promise.all([name, symbol, decimals, lockPromise, balancesPromise, tokenAddress]);
+
+                                    allPromises.then(function (values) {
+                                        var name = values[0];
+                                        var symbol = values[1];
+                                        var decimals = values[2];
+                                        var lock = values[3];
+                                        var balances = ethers.utils.formatUnits(values[4], decimals);
+                                        var tokenAddress = values[5];
+
+                                        $('#my-tokens').append('<li class="'+tokenAddress+'">\n' +
+                                            '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
+                                            '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm">'+
+                                            balances+' '+symbol+'</span>\n' +
+                                            '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
+                                            '</li>');
+                                        console.log('token:' + values);
+                                    }, function (err) {
+                                        $('#my-login').html(err);
+                                    });
+                                } else {
+                                    console.log("Error");
+                                }
+
+                            }
+                        }
                     }, function (err) {
                         $('#my-login').html(err);
                     });
-
-                    if(localStorage.getItem("ethersjs_token")) {
-                        var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
-                        for(var j = 0,len = tokens.length; j < len; j++){
-                            var contractAddress = tokens[j];
-                            console.log("token"+j+": "+tokens[j]);
-
-                            console.log(contractABI);
-                            if (contractABI != '') {
-                                var MyContract = new ethers.Contract(contractAddress, contractABI, myWallet);
-                                var balancesPromise = MyContract.balances(wallet.address);
-                                var namePromise = MyContract.name();
-                                var symbolPromise = MyContract.symbol();
-                                var decimalsPromise = MyContract.decimals();
-                                var lockPromise = MyContract.lock();
-                                var allPromises = Promise.all([namePromise, symbolPromise, decimalsPromise, lockPromise, balancesPromise]);
-
-                                allPromises.then(function (values) {
-                                    var name = values[0];
-                                    var symbol = values[1];
-                                    var decimals = values[2];
-                                    var lock = values[3];
-                                    var balances = ethers.utils.formatUnits(values[4], decimals);
-
-                                    $('#my-tokens').append('<li>\n' +
-                                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
-                                        '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">'+balances+' '+symbol+'</span>\n' +
-                                        '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
-                                        '</li>');
-                                    console.log('Values:' + values);
-                                }, function (err) {
-                                    $('#my-login').html(err);
-                                });
-                            } else {
-                                console.log("Error");
-                            }
-
-                        }
-                    }
                 } else {
                     // 抱歉！不支持 Web Storage ..
                     $("#my-storage").fadeIn();
                 }
+                $('#my-login-valid').fadeOut();
             }else{
                 $('#my-login-valid').fadeIn();
             }
+            $('#my-login-valid2').fadeOut();
         }else{
             $('#my-login-valid2').fadeIn();
         }
@@ -561,9 +574,11 @@ $(function() {
                     onCancel: function() {
                     }
                 });
+                $('#my-valid').fadeOut();
             }else{
                 $('#my-valid').fadeIn();
             }
+            $('#my-valid2').fadeOut();
         }else{
             $('#my-valid2').fadeIn();
         }
@@ -581,34 +596,82 @@ $(function() {
                     if(localStorage.getItem("ethersjs_token")){
                         tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
                     }
-                    tokens.push(tokenAddress);
-                    localStorage.setItem("ethersjs_token", JSON.stringify(tokens.distinct()));
+
+                    var MyContract = new ethers.Contract(tokenAddress, contractABI, provider);
+                    var namePromise = MyContract.name();
+                    var symbolPromise = MyContract.symbol();
+                    var decimalsPromise = MyContract.decimals();
+                    var lockPromise = MyContract.lock();
+                    var allPromises = Promise.all([namePromise, symbolPromise, decimalsPromise, lockPromise]);
+
+                    allPromises.then(function (values) {
+                        var token = {address: tokenAddress, name: values[0], symbol: values[1], decimals: values[2]};
+                        if(tokens.indexOf(token) > -1) {
+                            $('#my-token-valid2').fadeIn();
+                        }else{
+                            $('#my-token-valid2').fadeOut();
+                            tokens.push(token);
+                            localStorage.setItem("ethersjs_token", JSON.stringify(tokens.distinct()));
+                            console.log("add token"+(tokens.length-1)+": "+JSON.stringify(token));
+                            var name = values[0];
+                            var symbol = values[1];
+                            var decimals = values[2];
+                            var lock = values[3];
+                            $('#my-token-list').append('<li class="am-alert am-alert-secondary am-cf my-alert" data-am-alert id="' +
+                                tokenAddress + '">\n' +
+                                '<button type="button" class="am-close">&times;</button>\n' +
+                                '<p class="am-text-lg am-text-center am-text-break">' + name + '(' + symbol + ') :' + tokenAddress + '</p>\n' +
+                                '</li>');
+                            if(sessionStorage.getItem("login_wallet") && localStorage.getItem("ethersjs_wallet")) {
+                                var MyContract = new ethers.Contract(tokenAddress, contractABI, myWallet);
+                                var balancesPromise = MyContract.balances(myWallet.address);
+                                balancesPromise.then(function (result) {
+                                    var balances = ethers.utils.formatUnits(result, decimals);
+                                    $('#my-tokens').append('<li class="' + tokenAddress + '">\n' +
+                                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
+                                        '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm">' +
+                                        balances + ' ' + symbol + '</span>\n' +
+                                        '<span class="am-text-xl am-margin-left-sm">' + name + '(' + symbol + '):</span>\n' +
+                                        '</li>');
+                                    console.log("token:"+name+","+symbol+","+decimals+","+lock+","+result+","+tokenAddress);
+                                }, function (err) {
+                                    console.error(err);
+                                });
+                            }
+                        }
+                    }, function (err) {
+                        $('#my-token-valid').fadeIn();
+                    });
                 } else {
                     // 抱歉！不支持 Web Storage ..
                     $("#my-storage").fadeIn();
                 }
-                var MyContract = new ethers.Contract(tokenAddress, contractABI, provider);
-                var namePromise = MyContract.name();
-                var symbolPromise = MyContract.symbol();
-                var allPromises = Promise.all([namePromise, symbolPromise]);
-
-                allPromises.then(function (values) {
-                    var name = values[0];
-                    var symbol = values[1];
-                    $('#my-token-list').append('<li class="am-alert am-alert-secondary" data-am-alert>\n' +
-                        '<button type="button" class="am-close">&times;</button>\n' +
-                        '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
-                        '<span class="am-badge am-badge-danger am-round am-text-lg am-margin-right-sm" id="token">'+tokenAddress+'</span>\n' +
-                        '<span class="am-text-lg am-margin-left-sm">'+name+'('+symbol+') :</span>\n' +
-                        '</li>');
-                });
+                $('#my-token-valid').fadeOut();
             }
             catch(err)
             {
                 $('#my-token-valid').html(err).fadeIn();
             }
+            $('#my-token-valid').fadeOut();
         }else{
             $('#my-token-valid').fadeIn();
+        }
+    });
+
+    $('.my-alert .am-close').click(function() {
+        if(localStorage.getItem("ethersjs_token")) {
+            var tokenAddress = $(this).parent().attr("id");
+            var tokens = JSON.parse(localStorage.getItem("ethersjs_token"));
+            var newTokens = new Array();
+            for(var i = 0,len = tokens.length; i < len; i++){
+                if(tokens[i].address == tokenAddress){
+                    console.log("remove token: "+JSON.stringify(tokens[i]));
+                }else{
+                    newTokens.push(tokens[i]);
+                }
+            }
+            localStorage.setItem("ethersjs_token", JSON.stringify(newTokens.distinct()));
+            $('.'+tokenAddress).fadeOut();
         }
     });
 
