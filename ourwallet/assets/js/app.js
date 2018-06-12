@@ -157,7 +157,7 @@ $(function() {
                 allPromise.then(function(values) {
                     var balance = values[0];
                     var etherString = ethers.utils.formatEther(balance);
-                    $('#my-login').html("钱包地址："+wallet.address);
+                    $('#my-login').html("钱包地址：<br>"+wallet.address);
                     $("#eth").html(etherString+" ETH");
                     $('#my-login-valid2').fadeOut();
                     console.log("walletbalance:"+etherString);
@@ -187,11 +187,20 @@ $(function() {
                                 var balances = ethers.utils.formatUnits(values[3], decimals);
                                 var tokenAddress = values[4];
 
-                                $('#my-tokens').append('<li class="'+tokenAddress+'">\n' +
+                                $('#my-tokens').append('<li class="am-panel" data-am-collapse="{parent: \'#my-tokens\', target: \'#'+
+                                    symbol+'_'+tokenAddress+'\'}" class="'+tokenAddress+'">\n' +
                                     '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
                                     '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm">'+
                                     balances+' '+symbol+'</span>\n' +
-                                    '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
+                                    '<span class="am-text-xl am-margin-left-sm">'+name+':</span>\n' +
+                                    '<ul class="am-nav am-collapse" id="'+symbol+'_'+tokenAddress+'">' +
+                                    '<li>' +
+                                    '<div class="am-btn-group am-btn-group-justify">' +
+                                    '<a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="get">收款</a>' +
+                                    '<a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="send">转账</a>' +
+                                    '</div>' +
+                                    '</li>' +
+                                    '</ul>' +
                                     '</li>');
                                 console.log('token:' + values);
                             }, function (err) {
@@ -483,11 +492,20 @@ $(function() {
                                         var balances = ethers.utils.formatUnits(values[3], decimals);
                                         var tokenAddress = values[4];
 
-                                        $('#my-tokens').append('<li class="'+tokenAddress+'">\n' +
+                                        $('#my-tokens').append('<li class="am-panel" data-am-collapse="{parent: \'#my-tokens\', target: \'#\'+\n' +
+                                            symbol+'_'+tokenAddress+'\'}" class="'+tokenAddress+'">\n' +
                                             '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
                                             '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm">'+
                                             balances+' '+symbol+'</span>\n' +
-                                            '<span class="am-text-xl am-margin-left-sm">'+name+'('+symbol+'):</span>\n' +
+                                            '<span class="am-text-xl am-margin-left-sm">'+name+':</span>\n' +
+                                            '<ul class="am-nav am-collapse" id="'+symbol+'_'+tokenAddress+'">' +
+                                            '<li>' +
+                                            '<div class="am-btn-group am-btn-group-justify">' +
+                                            '<a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="get">收款</a>' +
+                                            '<a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="send">转账</a>' +
+                                            '</div>' +
+                                            '</li>' +
+                                            '</ul>' +
                                             '</li>');
                                         console.log('token:' + values);
                                     }, function (err) {
@@ -621,11 +639,20 @@ $(function() {
                                 var balancesPromise = MyContract.balanceOf(myWallet.address);
                                 balancesPromise.then(function (result) {
                                     var balances = ethers.utils.formatUnits(result, decimals);
-                                    $('#my-tokens').append('<li class="' + tokenAddress + '">\n' +
+                                    $('#my-tokens').append('<li class="am-panel" data-am-collapse="{parent: \'#my-tokens\', target: \'#\'+\n' +
+                                        symbol+'_'+tokenAddress+'\'}" class="' + tokenAddress + '">\n' +
                                         '<i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>\n' +
                                         '<span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm">' +
                                         balances + ' ' + symbol + '</span>\n' +
-                                        '<span class="am-text-xl am-margin-left-sm">' + name + '(' + symbol + '):</span>\n' +
+                                        '<span class="am-text-xl am-margin-left-sm">' + name + ':</span>\n' +
+                                        '<ul class="am-nav am-collapse" id="'+symbol+'_'+tokenAddress+'">' +
+                                        '<li>' +
+                                        '<div class="am-btn-group am-btn-group-justify">' +
+                                        '<a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="get">收款</a>' +
+                                        '<a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="send">转账</a>' +
+                                        '</div>' +
+                                        '</li>' +
+                                        '</ul>' +
                                         '</li>');
                                     console.log("token:"+name+","+symbol+","+decimals+","+result+","+tokenAddress);
                                 }, function (err) {

@@ -62,7 +62,7 @@
 </header>
 <section class="ask-banner">
     <div class="am-container am-padding-vertical-lg">
-        <h1>欢迎使用 OurWallet. 请选择要连接到的网络：</h1>
+        <h1>请选择要连接到的网络：</h1>
         <div class="am-form am-form-group">
             <select id="my-network" data-am-selected="{btnWidth: '100%'}">
                 <option value="homestead">Main Ethereum Network</option>
@@ -127,17 +127,25 @@
                             <br>
                             <div id="my-login-conment" class="am-panel am-panel-danger" hidden>
                                 <div class="am-panel-hd">
-                                    <h2 id="my-login" class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-login'}">
+                                    <h2 id="my-login" class="am-panel-title am-text-center" data-am-collapse="{parent: '#my-login-conment', target: '#do-login'}">
                                         钱包：
                                     </h2>
                                 </div>
                                 <div id="do-login" class="am-panel-collapse am-collapse am-in">
                                     <div class="am-panel-bd">
                                         <ul class="am-list am-list-static am-list-border am-list-striped" id="my-tokens">
-                                            <li>
+                                            <li class="am-panel" data-am-collapse="{parent: '#my-tokens', target: '#token-nav'}">
                                                 <i class="am-margin-left-sm fab fa-ethereum fa-2x"></i>
                                                 <span class="am-badge am-badge-danger am-round am-text-xl am-margin-right-sm" id="eth">* ETH</span>
                                                 <span class="am-text-xl am-margin-left-sm">ETH:</span>
+                                                <ul class="am-nav am-collapse" id="token-nav">
+                                                    <li>
+                                                        <div class="am-btn-group am-btn-group-justify">
+                                                            <a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="get">收款</a>
+                                                            <a type="button" class="am-btn am-btn-primary am-btn-xl am-round" id="send">转账</a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         </ul>
                                     </div>
@@ -172,7 +180,7 @@
                             <br>
                             <div id="my-conment" class="am-panel am-panel-danger" hidden>
                                 <div class="am-panel-hd">
-                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-save'}">
+                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#my-conment', target: '#do-save'}">
                                         请保存钱包信息：
                                     </h2>
                                 </div>
@@ -217,7 +225,7 @@
                             <br>
                             <div id="my-import-conment" class="am-panel am-panel-danger" hidden>
                                 <div class="am-panel-hd">
-                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#accordion', target: '#do-import-save'}">
+                                    <h2 class="am-panel-title am-text-center" data-am-collapse="{parent: '#my-import-conment', target: '#do-import-save'}">
                                         导入信息：
                                     </h2>
                                 </div>
